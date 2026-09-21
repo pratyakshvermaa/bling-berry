@@ -30,11 +30,11 @@ test.describe("Navigation", () => {
 
     await page.goto("/index.html#shop");
     await page.locator("#shop-grid .btn", { hasText: /view stacks/i }).click();
-    await page.waitForURL(/Bangles\.html/, { timeout: 15000 });
+    await page.waitForURL(/Bangles\.html/, { timeout: 15000, waitUntil: "domcontentloaded" });
 
     await page.goto("/index.html#shop");
     await page.locator("#shop-grid .btn", { hasText: /view watches/i }).click();
-    await page.waitForURL(/Watches\.html/, { timeout: 15000 });
+    await page.waitForURL(/Watches\.html/, { timeout: 15000, waitUntil: "domcontentloaded" });
   });
 
   test("footer keeps shop, about, reviews, and order routes", async ({ page }) => {
