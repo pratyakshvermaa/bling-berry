@@ -5,15 +5,32 @@
 [build.environment]
   PYTHON_VERSION = "3.11"
 
+[build.processing.html]
+  pretty_urls = false
+
 [[redirects]]
   from = "/Jwellery.html"
   to = "/index.html"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/Jwellery.html*"
   to = "/index.html"
   status = 301
+  force = true
+
+[[redirects]]
+  from = "/jwellery"
+  to = "/index.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/Jwellery"
+  to = "/index.html"
+  status = 301
+  force = true
 
 [[headers]]
   for = "/*.html"
