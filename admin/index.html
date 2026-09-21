@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Bling Berry</title>
+    <link rel="icon" href="../assets/logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <!-- Top bar -->
+    <div class="admin-topbar">
+        <a class="brand" href="../index.html">
+            <img src="../assets/bling-berry-logo.png" alt="Bling Berry">
+            <span>Admin</span>
+        </a>
+        <div class="top-actions">
+            <a href="../index.html">View store</a>
+            <button type="button" id="logout-btn">Sign out</button>
+        </div>
+    </div>
+
+    <div class="admin-body">
+        <nav class="admin-tabs" role="tablist" aria-label="Admin sections">
+            <button type="button" class="is-on" role="tab" id="tab-products" data-view="products" aria-selected="true" aria-controls="view-products">Products</button>
+            <button type="button" role="tab" id="tab-users" data-view="users" aria-selected="false" aria-controls="view-users">Users</button>
+        </nav>
+
+        <section class="admin-view is-on" id="view-products" role="tabpanel" aria-labelledby="tab-products">
+        <h1>Products</h1>
+        <p class="subtitle">Add, edit, and manage your jewellery catalogue</p>
+
+        <!-- Add / Edit form -->
+        <div class="product-form-wrapper">
+            <h2 id="form-title">Add new product</h2>
+            <form id="product-form">
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="p-name">Name</label>
+                        <input type="text" id="p-name" name="name" required placeholder="e.g. Gold Leaf Bangle">
+                    </div>
+                    <div class="field">
+                        <label for="p-category">Category</label>
+                        <select id="p-category" name="category" required>
+                            <option value="bangles">Bangles</option>
+                            <option value="watches">Watches</option>
+                            <option value="everyday">Everyday</option>
+                        </select>
+                    </div>
+                    <div class="field full">
+                        <label for="p-caption">Caption</label>
+                        <input type="text" id="p-caption" name="caption" placeholder="Short tagline">
+                    </div>
+                    <div class="field full">
+                        <label for="p-desc">Description</label>
+                        <textarea id="p-desc" name="description" rows="3" placeholder="Product copy shown on the page"></textarea>
+                    </div>
+                    <div class="field full">
+                        <label for="p-instagram">Instagram reel or post</label>
+                        <input type="text" id="p-instagram" name="instagram_url" placeholder="https://www.instagram.com/reel/…" inputmode="url" autocomplete="off">
+                    </div>
+                    <div class="field">
+                        <label for="p-price">Price (₹)</label>
+                        <input type="number" id="p-price" name="price" required min="0" step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="field">
+                        <label for="p-stock">Stock</label>
+                        <input type="number" id="p-stock" name="stock" required min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="field">
+                        <label for="p-sort">Sort order</label>
+                        <input type="number" id="p-sort" name="sort_order" min="0" step="1" value="0">
+                    </div>
+                    <div class="field">
+                        <label>Image</label>
+                        <label class="image-upload-area" for="p-image">
+                            <img class="preview-thumb" id="thumb-preview" src="" alt="Preview">
+                            <span class="upload-label"><strong>Choose file</strong> or drag &amp; drop</span>
+                            <input type="file" id="p-image" name="image" accept="image/*">
+                        </label>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn-primary" type="submit" id="form-submit">Add product</button>
+                    <button class="btn-secondary" type="button" id="form-cancel" style="display:none">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Product table -->
+        <div class="product-table-wrapper">
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Details</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="product-tbody"></tbody>
+            </table>
+            <div class="empty-state" id="empty-state">
+                <div class="icon">✦</div>
+                <p>No products yet — add your first piece above</p>
+            </div>
+        </div>
+        </section>
+
+        <section class="admin-view" id="view-users" role="tabpanel" aria-labelledby="tab-users">
+            <h1>Users</h1>
+            <p class="subtitle" id="users-subtitle">Who can sign in, and what they can reach.</p>
+
+            <div class="people-board" id="people-board">
+                <div class="people-list" id="users-tbody"></div>
+                <div class="empty-state" id="users-empty">
+                    <div class="icon">✦</div>
+                    <p>No accounts yet</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Confirm delete modal -->
+    <div class="confirm-overlay" id="confirm-overlay">
+        <div class="confirm-box">
+            <h3>Delete product?</h3>
+            <p>Are you sure you want to delete <strong id="confirm-name"></strong>? This cannot be undone.</p>
+            <div class="actions">
+                <button class="btn-secondary" id="confirm-no">Cancel</button>
+                <button class="btn-danger" id="confirm-yes">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-config.js?v=live2"></script>
+    <script src="admin.js?v=copy1"></script>
+</body>
+</html>

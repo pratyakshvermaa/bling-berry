@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete your profile — Bling Berry</title>
+    <link rel="icon" href="assets/logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=UnifrakturMaguntia&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #f8f0f0;
+            --cream-deep: #efe4e2;
+            --paper: #fffaf9;
+            --cherry: #902820;
+            --cherry-deep: #721f19;
+            --ink: #1a1212;
+            --muted: #6b5553;
+            --line: #e4d4d1;
+            --gold-soft: #c4a484;
+            --ease-silk: cubic-bezier(0.23, 0.12, 0.18, 1);
+            --ease-inout: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            font: 100%/1.55 "Outfit", system-ui, sans-serif;
+            color: var(--ink);
+            background: var(--cream);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        img { max-width: 100%; display: block; }
+        a { color: inherit; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(900px 500px at 20% 10%, #f3d4d0 0%, transparent 55%),
+                radial-gradient(700px 400px at 80% 90%, #f7e6e2 0%, transparent 50%),
+                var(--cream);
+            padding: 24px;
+        }
+        .auth-card {
+            width: min(520px, 100%);
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            padding: 1.6rem 1.8rem 1.5rem;
+            box-shadow: 0 24px 64px rgba(26, 18, 18, 0.08);
+        }
+        .auth-logo {
+            display: block;
+            width: 64px;
+            height: auto;
+            margin: 0 auto 24px;
+        }
+        .auth-card h1 {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        .auth-card .subtitle {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.88rem;
+            margin-bottom: 28px;
+        }
+        .field { margin-bottom: 16px; }
+        .field:has(.dob) { position: relative; z-index: 3; }
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+        }
+        .field-label {
+            display: block;
+            font-size: 0.74rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .dob {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 0.78fr 1.45fr 0.95fr;
+            background: var(--cream);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            transition: border-color 0.4s var(--ease-inout), box-shadow 0.4s var(--ease-inout);
+        }
+        .dob:focus-within,
+        .dob.has-open {
+            border-color: var(--gold-soft);
+            box-shadow: 0 0 0 3px rgba(196, 164, 132, 0.16);
+        }
+        .dob-seg {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1px;
+            width: 100%;
+            min-width: 0;
+            padding: 8px 14px 7px;
+            min-height: 52px;
+            border: 0;
+            background-color: transparent;
+            text-align: left;
+            cursor: pointer;
+            color: inherit;
+            font: inherit;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none'%3E%3Cpath d='M2.5 4.5L6 8l3.5-3.5' stroke='%23c4a484' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 10px;
+            padding-right: 28px;
+            transition: background-color 180ms var(--ease-silk);
+        }
+        .dob-seg + .dob-seg {
+            box-shadow: inset 1px 0 0 var(--line);
+        }
+        .dob-seg:hover,
+        .dob-seg.is-open {
+            background-color: rgba(255, 250, 249, 0.72);
+        }
+        .dob-seg:active { transform: scale(0.99); }
+        .dob-value {
+            display: block;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: 1.08rem;
+            font-weight: 500;
+            font-optical-sizing: auto;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: var(--ink);
+        }
+        .dob-value.is-empty {
+            font-family: inherit;
+            font-size: 0.86rem;
+            letter-spacing: 0.01em;
+            color: #b39b98;
+        }
+        .dob-value.is-empty + .dob-cap {
+            display: none;
+        }
+        .dob-seg[data-part="month"] .dob-value:not(.is-empty) {
+            font-style: italic;
+        }
+        .dob-cap {
+            font-size: 0.58rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .dob-panel {
+            position: absolute;
+            top: calc(100% + 8px);
+            z-index: 8;
+            max-height: 220px;
+            overflow: hidden;
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            box-shadow: 0 22px 44px rgba(26, 18, 18, 0.12);
+            opacity: 0;
+            transform: translate3d(0, 8px, 0);
+            pointer-events: none;
+            transition:
+                opacity 0.32s var(--ease-silk),
+                transform 0.32s var(--ease-silk);
+        }
+        .dob-panel.is-on {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+            pointer-events: auto;
+        }
+        .dob-list {
+            list-style: none;
+            max-height: 220px;
+            overflow-y: auto;
+            padding: 6px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--line) transparent;
+        }
+        .dob-list::-webkit-scrollbar { width: 6px; }
+        .dob-list::-webkit-scrollbar-thumb {
+            background: var(--line);
+            border-radius: 99px;
+        }
+        .dob-opt {
+            padding: 8px 12px;
+            border-radius: 9px;
+            font-size: 0.88rem;
+            letter-spacing: 0.01em;
+            color: var(--ink);
+            cursor: pointer;
+            transition: background 160ms var(--ease-silk), color 160ms var(--ease-silk);
+        }
+        .dob-opt:hover,
+        .dob-opt.is-on {
+            background: var(--cream);
+            color: var(--cherry);
+        }
+        .dob-opt.is-on { font-weight: 600; }
+        @media (prefers-reduced-motion: reduce) {
+            .dob-panel { transition: opacity 0.2s ease; transform: none; }
+        }
+        .field label {
+            display: block;
+            font-size: 0.74rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .field input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            font: inherit;
+            font-size: 0.92rem;
+            background: var(--cream);
+            color: var(--ink);
+            transition: border-color 0.4s var(--ease-inout), box-shadow 0.4s var(--ease-inout);
+        }
+        .field input:focus {
+            outline: none;
+            border-color: var(--gold-soft);
+            box-shadow: 0 0 0 3px rgba(196, 164, 132, 0.18);
+        }
+        .field input[readonly] {
+            background: var(--cream-deep);
+            color: var(--muted);
+        }
+        .checkbox-field {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 18px 0 22px;
+        }
+        .checkbox-field input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            accent-color: var(--cherry);
+            flex-shrink: 0;
+        }
+        .checkbox-field label {
+            font-size: 0.84rem;
+            color: var(--muted);
+            cursor: pointer;
+            line-height: 1.4;
+        }
+        .btn-primary {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 999px;
+            background: var(--cherry);
+            color: var(--cream);
+            font: inherit;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.4s var(--ease-inout), transform 180ms var(--ease-silk);
+        }
+        .btn-primary:hover { background: var(--cherry-deep); }
+        .btn-primary:active { transform: scale(0.985); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .error-msg {
+            background: rgba(144, 40, 32, 0.08);
+            color: var(--cherry);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .error-msg.is-on { display: block; }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <a href="index.html">
+            <img class="auth-logo" src="assets/bling-berry-logo.png" alt="Bling Berry">
+        </a>
+        <h1>Almost there</h1>
+        <p class="subtitle">Just a couple more details to finish your profile</p>
+
+        <div class="error-msg" id="error-msg"></div>
+
+        <form id="profile-form">
+            <div class="field">
+                <label for="name">Full name</label>
+                <input type="text" id="name" name="name" readonly>
+            </div>
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" readonly>
+            </div>
+            <div class="field">
+                <span class="field-label" id="dob-label">Date of birth</span>
+                <div class="dob" id="dob" role="group" aria-labelledby="dob-label">
+                    <button type="button" class="dob-seg" data-part="day" aria-haspopup="listbox" aria-expanded="false">
+                        <span class="dob-value is-empty" data-value>Day</span>
+                        <span class="dob-cap">Day</span>
+                    </button>
+                    <button type="button" class="dob-seg" data-part="month" aria-haspopup="listbox" aria-expanded="false">
+                        <span class="dob-value is-empty" data-value>Month</span>
+                        <span class="dob-cap">Month</span>
+                    </button>
+                    <button type="button" class="dob-seg" data-part="year" aria-haspopup="listbox" aria-expanded="false">
+                        <span class="dob-value is-empty" data-value>Year</span>
+                        <span class="dob-cap">Year</span>
+                    </button>
+                    <div class="dob-panel" hidden>
+                        <ul class="dob-list" role="listbox" aria-labelledby="dob-label"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="checkbox-field">
+                <input type="checkbox" id="marketing" name="marketing">
+                <label for="marketing">Send me offers and updates</label>
+            </div>
+            <button class="btn-primary" type="submit" id="submit-btn">Complete profile</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js?v=live2"></script>
+    <script src="dob-picker.js"></script>
+    <script>
+        (function () {
+            var form = document.getElementById("profile-form");
+            var errEl = document.getElementById("error-msg");
+            var btn = document.getElementById("submit-btn");
+            var dob = bbInitDob(document.getElementById("dob"));
+
+            function showError(msg) {
+                errEl.textContent = msg;
+                errEl.classList.add("is-on");
+            }
+
+            bb.getUser().then(function (user) {
+                if (!user) {
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                var meta = user.user_metadata || {};
+                document.getElementById("name").value = meta.full_name || meta.name || "";
+                document.getElementById("email").value = user.email || "";
+
+                bb.getProfile().then(function (profile) {
+                    if (profile && profile.date_of_birth) {
+                        window.location.href = "index.html";
+                    }
+                });
+            });
+
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                errEl.classList.remove("is-on");
+                btn.disabled = true;
+                btn.textContent = "Saving…";
+
+                var dobValue = dob.read();
+                if (!dobValue) {
+                    showError("Please choose your date of birth.");
+                    btn.disabled = false;
+                    btn.textContent = "Complete profile";
+                    return;
+                }
+                var marketing = document.getElementById("marketing").checked;
+
+                bb.getUser().then(function (user) {
+                    if (!user) return;
+
+                    bb.supabase
+                        .from("profiles")
+                        .update({
+                            date_of_birth: dobValue,
+                            marketing_opt_in: marketing
+                        })
+                        .eq("id", user.id)
+                        .then(function (res) {
+                            if (res.error) {
+                                showError(res.error.message);
+                                btn.disabled = false;
+                                btn.textContent = "Complete profile";
+                                return;
+                            }
+                            window.location.href = "index.html";
+                        });
+                });
+            });
+        }());
+    </script>
+</body>
+</html>

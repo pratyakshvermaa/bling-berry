@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Bling Berry</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <script>
+        try { sessionStorage.setItem("blingBerryEntered", "1"); } catch (e) {}
+    </script>
+    <link rel="icon" href="assets/logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=UnifrakturMaguntia&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #f8f0f0;
+            --cream-deep: #efe4e2;
+            --paper: #fffaf9;
+            --cherry: #902820;
+            --cherry-deep: #721f19;
+            --ink: #1a1212;
+            --muted: #6b5553;
+            --line: #e4d4d1;
+            --gold-soft: #c4a484;
+            --ease-silk: cubic-bezier(0.23, 0.12, 0.18, 1);
+            --ease-inout: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            font: 100%/1.55 "Outfit", system-ui, sans-serif;
+            color: var(--ink);
+            background: var(--cream);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        img { max-width: 100%; display: block; }
+        a { color: inherit; }
+
+        body {
+            color: var(--ink);
+            background:
+                radial-gradient(1200px 700px at 8% -8%, #f3d4d0 0%, transparent 52%),
+                radial-gradient(900px 520px at 100% 0%, #f7e6e2 0%, transparent 48%),
+                linear-gradient(180deg, #f8f0f0 0%, #efe4e2 100%);
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+
+        .container { width: min(1400px, calc(100% - 48px)); max-width: 100%; margin: 0 auto; }
+        header .container { width: min(1400px, calc(100% - 40px)); position: relative; z-index: 8; }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(247, 244, 242, 0.78);
+            backdrop-filter: blur(20px) saturate(170%);
+            -webkit-backdrop-filter: blur(20px) saturate(170%);
+        }
+
+        .navbar {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            justify-self: start;
+        }
+
+        .brand img,
+        .brand-mark {
+            display: block;
+            width: auto;
+            height: 56px;
+            max-width: none;
+            border-radius: 0;
+            object-fit: contain;
+        }
+
+        .brand .brand-mark { height: 56px; }
+
+        .nav-links {
+            display: none;
+            list-style: none;
+            align-items: center;
+            gap: 8px;
+            justify-self: center;
+        }
+
+        @media (min-width: 768px) { .nav-links { display: flex; } }
+
+        .nav-links > li { position: relative; }
+
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #1c1917;
+            padding: 8px 14px;
+            transition: color 0.45s var(--ease-inout);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.is-now { color: var(--cherry); }
+
+        .chevron { width: 11px; height: 11px; opacity: 0.75; }
+
+        .nav-links > li { position: relative; }
+
+        .drop {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            z-index: 20;
+            transform: translateX(-50%) translateY(8px);
+            min-width: 180px;
+            padding: 8px;
+            padding-top: 14px;
+            background: #fffaf9;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 12px 32px rgba(26, 18, 18, 0.08);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.42s var(--ease-silk), transform 0.42s var(--ease-silk);
+        }
+
+        .drop::before {
+            content: "";
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            height: 14px;
+        }
+
+        .nav-links > li:hover .drop,
+        .nav-links > li:focus-within .drop {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .drop a {
+            display: block;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            transition: background 0.4s var(--ease-inout), color 0.4s var(--ease-inout);
+        }
+        .drop a:hover { background: rgba(144, 40, 32, 0.06); color: var(--cherry); }
+
+        .nav-end {
+            display: flex;
+            align-items: center;
+            justify-self: end;
+            gap: 10px;
+        }
+
+        .nav-auth {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.35em;
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #1c1917;
+            padding: 8px 4px;
+            white-space: nowrap;
+            max-width: min(46vw, 16rem);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.45s var(--ease-inout);
+        }
+        .nav-auth:hover { color: var(--cherry); }
+        .nav-auth.is-welcome {
+            text-transform: none;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font: inherit;
+            max-width: min(46vw, 16rem);
+        }
+        .nav-auth.is-welcome:hover { color: inherit; }
+        .nav-auth-hello { color: var(--muted); font-weight: 400; }
+        .nav-auth-name {
+            font-family: "Playfair Display", Georgia, serif;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .nav-account { position: relative; }
+        .nav-account-chevron {
+            width: 9px;
+            height: 9px;
+            margin-left: 2px;
+            opacity: 0.4;
+            transition: transform 0.42s var(--ease-silk), opacity 0.42s var(--ease-silk);
+        }
+        .nav-account:hover .nav-account-chevron,
+        .nav-account.is-open .nav-account-chevron { opacity: 0.7; transform: rotate(180deg); }
+        .nav-account-drop {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            z-index: 6;
+            min-width: 148px;
+            padding: 8px;
+            padding-top: 14px;
+            background: #fffaf9;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 12px 32px rgba(26, 18, 18, 0.08);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(6px);
+            transition: opacity 0.42s var(--ease-silk), transform 0.42s var(--ease-silk);
+        }
+        .nav-account-drop::before {
+            content: "";
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            height: 14px;
+        }
+        .nav-account:hover .nav-account-drop,
+        .nav-account:focus-within .nav-account-drop,
+        .nav-account.is-open .nav-account-drop {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        .nav-account-drop a,
+        .nav-account-drop button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 8px;
+            background: none;
+            font: inherit;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink);
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.4s var(--ease-inout), color 0.4s var(--ease-inout);
+        }
+        .nav-account-drop a:hover,
+        .nav-account-drop button:hover {
+            background: rgba(144, 40, 32, 0.06);
+            color: var(--cherry);
+        }
+
+        .menu-btn {
+            display: inline-flex;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: transparent;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        @media (min-width: 768px) { .menu-btn { display: none; } }
+
+        .menu-btn span,
+        .menu-btn span::before,
+        .menu-btn span::after {
+            display: block;
+            width: 16px;
+            height: 1px;
+            background: var(--ink);
+            position: relative;
+        }
+
+        .menu-btn span::before,
+        .menu-btn span::after { content: ""; position: absolute; left: 0; }
+        .menu-btn span::before { top: -5px; }
+        .menu-btn span::after { top: 5px; }
+
+        .mobile-nav {
+            display: none;
+            border-top: 1px solid var(--line);
+            padding: 12px 20px 16px;
+        }
+
+        .mobile-nav.is-open { display: flex; flex-direction: column; gap: 4px; }
+        @media (min-width: 768px) { .mobile-nav { display: none !important; } }
+
+        .mobile-nav a {
+            display: flex;
+            padding: 10px 4px;
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .hero {
+            position: relative;
+            padding: 40px 0 36px;
+            overflow: visible;
+        }
+
+        .hero .container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 18px;
+        }
+
+        .hero-glow {
+            position: absolute;
+            inset: -10% 10% auto;
+            height: 46%;
+            background: radial-gradient(closest-side, rgba(144, 40, 32, 0.14), transparent 72%);
+            pointer-events: none;
+        }
+
+        .kicker {
+            color: var(--cherry);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-family: "Playfair Display", Georgia, serif;
+            font-weight: 500;
+            font-size: clamp(2.24rem, 6.1vw, 4.4rem);
+            line-height: 1.08;
+            letter-spacing: -0.035em;
+            font-optical-sizing: auto;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            font-weight: 500;
+            color: var(--cherry);
+        }
+
+        .sign {
+            margin: 0 0 12px;
+            width: min(22rem, 100%);
+            max-width: 100%;
+            min-width: 0;
+        }
+
+        .sign img,
+        .sign .brand-mark {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            border-radius: 0;
+            object-fit: contain;
+        }
+
+        .hero-note {
+            max-width: 36rem;
+            width: 100%;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.65;
+        }
+
+        .marquee {
+            position: relative;
+            z-index: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            border-bottom: 1px solid var(--line);
+            padding: 11px 0 7px;
+            background: rgba(255, 250, 249, 0.92);
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+        }
+
+        .marquee-track {
+            display: flex;
+            align-items: center;
+            width: max-content;
+            animation: drift 56s linear infinite;
+            color: var(--muted);
+            font-size: 0.47rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            will-change: transform;
+        }
+
+        .marquee:hover .marquee-track { animation-play-state: paused; }
+
+        .marquee-set {
+            display: flex;
+            align-items: center;
+            gap: 0.81rem;
+            padding-right: 0.81rem;
+        }
+
+        .marquee b { color: var(--cherry); font-weight: 600; }
+
+        header .marquee .brand-mark,
+        .brand-mark--marquee {
+            height: 24px;
+            width: auto;
+            border-radius: 0;
+        }
+
+        @keyframes drift {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        .chapter {
+            padding: 96px 0;
+            overflow: hidden;
+        }
+
+        .chapter-head {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr);
+            gap: 18px 28px;
+            align-items: baseline;
+            margin-bottom: 48px;
+        }
+
+        .num {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: 0.95rem;
+            letter-spacing: 0.14em;
+            color: var(--cherry);
+        }
+
+        .chapter h2 {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(1.8rem, 3.6vw, 3.1rem);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            line-height: 1.12;
+            max-width: 16ch;
+        }
+
+        .chapter h2.one-line {
+            max-width: none;
+            white-space: nowrap;
+            font-size: clamp(1.15rem, 2.85vw, 3.1rem);
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 56px;
+            align-items: center;
+        }
+
+        .copy p {
+            color: var(--muted);
+            font-size: 1.08rem;
+            line-height: 1.7;
+            margin-bottom: 1.15em;
+            max-width: 38rem;
+        }
+
+        .pull {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(1.7rem, 3vw, 2.5rem);
+            font-style: italic;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+            color: var(--ink);
+            margin: 8px 0 28px;
+        }
+
+        .frame {
+            display: grid;
+            grid-template-columns: 1.15fr 0.72fr;
+            gap: 14px;
+            align-items: end;
+            overflow: hidden;
+        }
+
+        .frame img {
+            width: 100%;
+            height: min(58vh, 500px);
+            object-fit: cover;
+            border-radius: 10px 36px 10px 36px;
+            filter: saturate(0.92);
+            transition: transform 1.8s var(--ease-silk), filter 1.8s var(--ease-silk);
+        }
+
+        .frame:hover img {
+            transform: scale(1.03);
+            filter: saturate(1);
+        }
+
+        .frame .float {
+            height: min(40vh, 340px);
+            border-radius: 8px 24px 8px 24px;
+            box-shadow: 0 16px 36px rgba(26, 18, 18, 0.12);
+        }
+
+        .principles {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            max-width: 75%;
+            background: var(--line);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .principle {
+            background: var(--paper);
+            padding: 27px 24px 24px;
+            min-height: 165px;
+            transition:
+                background 0.7s var(--ease-inout),
+                opacity 1.9s var(--ease-silk),
+                transform 1.9s var(--ease-silk),
+                filter 1.9s var(--ease-silk);
+        }
+
+        .principle.reveal {
+            opacity: 0;
+        }
+
+        .principle.reveal.in-a {
+            background: var(--paper);
+            transform: translate3d(-22px, 18px, 0);
+            filter: blur(3px);
+        }
+
+        .principle.reveal.in-b {
+            background: #fff7f4;
+            transform: translate3d(22px, 14px, 0);
+            filter: blur(4px);
+            transition-duration: 0.7s, 2.05s, 2.05s, 2.05s;
+        }
+
+        .principle.reveal.in-c {
+            background: #faf2f0;
+            transform: translate3d(-8px, 26px, 0) scale(0.98);
+            filter: blur(3px);
+            transition-duration: 0.7s, 1.85s, 1.85s, 1.85s;
+        }
+
+        .principle.reveal.in-d {
+            background: #fff9f6;
+            transform: translate3d(18px, 20px, 0);
+            filter: blur(5px);
+            transition-duration: 0.7s, 2.15s, 2.15s, 2.15s;
+        }
+
+        .principle.reveal.is-in {
+            opacity: 1;
+            transform: none;
+            filter: none;
+        }
+
+        .principle:hover,
+        .principle.reveal.is-in:hover { background: #fff; }
+
+        .principle span {
+            display: block;
+            font-size: 0.66rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--cherry);
+            margin-bottom: 14px;
+        }
+
+        .principle h3 {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(1.28rem, 1.8vw, 1.5rem);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 9px;
+        }
+
+        .principle p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.45;
+            max-width: 21rem;
+        }
+
+        .mosaic {
+            display: grid;
+            grid-template-columns: 1.3fr 0.85fr 1fr;
+            grid-template-rows: 280px 220px;
+            gap: 14px;
+        }
+
+        .mosaic figure {
+            margin: 0;
+            overflow: hidden;
+            border-radius: 18px;
+            position: relative;
+        }
+
+        .mosaic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.01);
+            transition: transform 1.7s var(--ease-silk);
+        }
+
+        .mosaic figure:hover img { transform: scale(1.035); }
+
+        .mosaic .wide { grid-column: 1 / 3; }
+        .mosaic .tall { grid-row: 1 / 3; grid-column: 3; }
+
+        .close {
+            text-align: center;
+            padding: 40px 0 20px;
+        }
+
+        .close h2 {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(2rem, 4.4vw, 3.6rem);
+            font-weight: 500;
+            letter-spacing: -0.035em;
+            line-height: 1.12;
+            max-width: 16ch;
+            margin: 0 auto 18px;
+        }
+
+        .close p {
+            color: var(--muted);
+            max-width: 32rem;
+            margin: 0 auto 28px;
+            font-size: 1.05rem;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--cherry);
+            color: var(--cream);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 13px 22px;
+            border-radius: 999px;
+            transition: transform 180ms var(--ease-silk), background 0.5s var(--ease-inout), box-shadow 0.5s var(--ease-inout);
+            touch-action: manipulation;
+        }
+
+        .btn:hover {
+            background: var(--cherry-deep);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(144, 40, 32, 0.14);
+        }
+        .btn:active { transform: scale(0.985); box-shadow: none; }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--ink);
+            border: 1px solid var(--line);
+        }
+
+        .btn-ghost:hover { background: var(--paper); }
+
+        footer {
+            background: var(--ink);
+            color: var(--cream);
+            padding: 36px 0 14px;
+            text-align: left;
+        }
+
+        .footer-mark {
+            margin: 0 0 2px;
+            line-height: 0;
+        }
+
+        .footer-mark .brand-mark {
+            display: block;
+            height: auto;
+            width: min(10.5rem, 46vw);
+        }
+
+        .footer-line {
+            margin: 0 0 22px;
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(0.92rem, 1.6vw, 1.08rem);
+            font-style: italic;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: rgba(248, 240, 240, 0.5);
+        }
+
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px 24px;
+            flex-wrap: wrap;
+            padding-bottom: 14px;
+        }
+
+        .footer-nav,
+        .footer-talk {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px 26px;
+            margin: 0;
+            min-width: 0;
+        }
+
+        footer a {
+            color: rgba(248, 240, 240, 0.58);
+            text-decoration: none;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            transition: color 0.45s var(--ease-inout);
+        }
+
+        footer a:hover { color: var(--cream); }
+
+        .footer-base {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid rgba(248, 240, 240, 0.1);
+            padding-top: 10px;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            color: rgba(248, 240, 240, 0.36);
+        }
+
+        .reveal:not(.principle) {
+            opacity: 0;
+            transform: translate3d(0, 14px, 0);
+            filter: blur(3px);
+            transition:
+                opacity 1.9s var(--ease-silk),
+                transform 1.9s var(--ease-silk),
+                filter 1.9s var(--ease-silk);
+        }
+
+        .reveal:not(.principle).is-in {
+            opacity: 1;
+            transform: none;
+            filter: none;
+        }
+
+        .d1 { transition-delay: 160ms; }
+        .d2 { transition-delay: 320ms; }
+        .d3 { transition-delay: 480ms; }
+        .d4 { transition-delay: 640ms; }
+
+        @media (max-width: 900px) {
+            .brand .brand-mark { height: 48px; }
+            .hero { padding: 32px 0 28px; }
+            .hero h1 { font-size: clamp(1.55rem, 6.5vw, 2.5rem); max-width: 100%; overflow-wrap: break-word; }
+            .hero-note { max-width: 100%; }
+            .sign { width: min(16.5rem, 100%); }
+            .brand img, .brand-mark { height: 48px; }
+            .copy p { max-width: 100%; overflow-wrap: break-word; }
+            .hero .container, .chapter .container { max-width: 100%; overflow-x: hidden; }
+            .chapter-head { grid-template-columns: 1fr; gap: 8px; max-width: 100%; }
+            .chapter h2, .chapter h2.one-line { white-space: normal; max-width: 100%; font-size: clamp(1.28rem, 6vw, 1.7rem); }
+            .split, .principles, .mosaic, .frame { grid-template-columns: 1fr; }
+            .principles { max-width: 100%; }
+            .mosaic { grid-template-rows: none; }
+            .mosaic figure { height: 240px; }
+            .mosaic .wide, .mosaic .tall { grid-column: auto; grid-row: auto; }
+            .frame img,
+            .frame .float { height: 320px; }
+            .principle { min-height: 0; }
+            .chapter { padding: 72px 0; }
+            .footer-mark .brand-mark { width: min(10rem, 52vw); }
+            .footer-row { display: grid; gap: 12px; }
+            .footer-nav, .footer-talk { display: flex; flex-wrap: wrap; width: 100%; gap: 8px 18px; }
+            .footer-nav a, .footer-talk a { letter-spacing: 0.1em; font-size: 0.68rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal,
+            .principle.reveal { opacity: 1; transform: none; filter: none; transition: none; }
+            .marquee-track { animation: none; }
+            .mosaic img,
+            .frame img,
+            .btn,
+            .drop { transition: none; }
+            .mosaic figure:hover img,
+            .frame:hover img,
+            .btn:hover,
+            .btn:active { transform: none; }
+        }
+
+        @media (prefers-reduced-transparency: reduce) {
+            header { background: #f7f4f2; backdrop-filter: none; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a class="brand" href="index.html">
+                    <img class="brand-mark" src="assets/brand-lockup.png" alt="Bling Berry">
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li>
+                        <a href="index.html#shop">
+                            Shop
+                            <svg class="chevron" viewBox="0 0 12 12" fill="none" aria-hidden>
+                                <path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                        <div class="drop">
+                            <a href="Bangles.html">Bangles</a>
+                            <a href="Watches.html">Watches</a>
+                            <a href="index.html#shop">All collections</a>
+                        </div>
+                    </li>
+                    <li><a href="About.html" aria-current="page" class="is-now">About</a></li>
+                    <li><a href="Reviews.html">Reviews</a></li>
+                    <li><a href="index.html#order">Order</a></li>
+                </ul>
+                <div class="nav-end">
+                    <a class="nav-auth" href="login.html">Login</a>
+                    <button class="menu-btn" type="button" id="menu-btn" aria-label="Open menu" aria-expanded="false">
+                        <span></span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+        <div class="mobile-nav" id="mobile-nav">
+            <a href="index.html">Home</a>
+            <a href="index.html#shop">Shop</a>
+            <a href="Bangles.html">Bangles</a>
+            <a href="Watches.html">Watches</a>
+            <a href="About.html" aria-current="page">About</a>
+            <a href="Reviews.html">Reviews</a>
+            <a href="index.html#order">Order</a>
+            <a class="nav-auth" href="login.html">Login</a>
+        </div>
+        <div class="marquee" aria-hidden="true">
+            <div class="marquee-track">
+                <span class="marquee-set">
+                    <img class="brand-mark brand-mark--marquee" src="assets/brand-lockup.png" alt=""><b>·</b>
+                    <span>Photograph well</span><b>·</b>
+                    <span>Wear better</span><b>·</b>
+                    <span>Honest prices</span><b>·</b>
+                    <span>Anti tarnish</span><b>·</b>
+                    <span>Pan India</span><b>·</b>
+                </span>
+                <span class="marquee-set">
+                    <img class="brand-mark brand-mark--marquee" src="assets/brand-lockup.png" alt=""><b>·</b>
+                    <span>Photograph well</span><b>·</b>
+                    <span>Wear better</span><b>·</b>
+                    <span>Honest prices</span><b>·</b>
+                    <span>Anti tarnish</span><b>·</b>
+                    <span>Pan India</span><b>·</b>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-glow" aria-hidden="true"></div>
+            <div class="container">
+                <div class="sign">
+                    <img class="brand-mark" src="assets/brand-lockup.png" alt="Bling Berry">
+                </div>
+                <h1 class="reveal d1">Not boring jewellery. Not <em>disposable</em> either.</h1>
+                <p class="hero-note reveal d2">Pieces that photograph well and wear better. Festive stacks, vintage watches, everyday sparkle — without the tarnish panic.</p>
+            </div>
+        </section>
+
+        <section class="chapter" id="story">
+            <div class="container">
+                <div class="chapter-head">
+                    <span class="num reveal">01</span>
+                    <h2 class="one-line reveal d1">An accessories brand with a very specific promise.</h2>
+                </div>
+                <div class="split">
+                    <div class="copy">
+                        <p class="pull reveal">Photograph well. Wear better.</p>
+                        <p class="reveal d1">Bling Berry is for people who want pieces that look finished in a close-up and still feel right by week two. Think bangle stacks for festive fits, vintage watches that actually get compliments, and everyday sparkle that doesn’t go dull.</p>
+                        <p class="reveal d2">We sell the way the brand lives: close-ups, honest prices, and orders over Instagram. If you see it on @blingberyyy and want it, send a DM.</p>
+                    </div>
+                    <div class="frame reveal d2">
+                        <img src="assets/bangles/butter-wrist.jpg" alt="Honey, gold, and ivory bangles on a wrist">
+                        <img class="float" src="assets/bangles/turquoise-look.jpg" alt="Turquoise bangle stack">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="chapter">
+            <div class="container">
+                <div class="chapter-head">
+                    <span class="num reveal">02</span>
+                    <h2 class="reveal d1">Why the pieces stay.</h2>
+                </div>
+                <div class="principles">
+                    <article class="principle reveal in-a">
+                        <span>01</span>
+                        <h3>Zero tarnish</h3>
+                        <p>Anti-tarnish pieces designed to stay bright after real wear — class, commute, festive nights — not just the unboxing photo.</p>
+                    </article>
+                    <article class="principle reveal in-b">
+                        <span>02</span>
+                        <h3>Made to stack</h3>
+                        <p>Resin, wood, gold, ivory, tortoise. Looks built to layer, photograph, and live on your wrist — not sit in a box.</p>
+                    </article>
+                    <article class="principle reveal in-c">
+                        <span>03</span>
+                        <h3>Honest prices</h3>
+                        <p>Wooden bangle stacks under ₹499. Vintage watches under ₹999. Glow on a real budget, shipped pan India.</p>
+                    </article>
+                    <article class="principle reveal in-d">
+                        <span>04</span>
+                        <h3>Sold like the feed</h3>
+                        <p>Close-ups, no theatre. If you see it on @blingberyyy, DM the piece. We pack with care and send it across India.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="chapter" style="padding-top:12px">
+            <div class="container">
+                <div class="chapter-head">
+                    <span class="num reveal">03</span>
+                    <h2 class="reveal d1">The language of the look.</h2>
+                </div>
+                <div class="mosaic">
+                    <figure class="wide reveal"><img src="assets/bangles/ivory-dress.jpg" alt="Ivory bangles worn with a dress"></figure>
+                    <figure class="tall reveal d1"><img src="assets/bangles/wood-carved.jpg" alt="Carved wooden bangles"></figure>
+                    <figure class="reveal d2"><img src="assets/bangles/sky-stack.jpg" alt="Sky blue bangle stack"></figure>
+                    <figure class="reveal d3"><img src="assets/bangles/tortoise-dress.jpg" alt="Tortoise bangles on a wrist"></figure>
+                </div>
+            </div>
+        </section>
+
+        <section class="chapter close">
+            <div class="container">
+                <p class="kicker reveal">The invite</p>
+                <h2 class="reveal d1">Your sign to stop scrolling and order.</h2>
+                <p class="reveal d2">If you see it on @blingberyyy and want it, send a DM. Close-ups, honest prices, pieces that keep their shine.</p>
+                <div class="actions reveal d3">
+                    <a class="btn" href="https://www.instagram.com/blingberyyy/" target="_blank" rel="noopener">Meet us on Instagram</a>
+                    <a class="btn btn-ghost" href="Bangles.html">See the stacks</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p class="footer-mark"><img class="brand-mark" src="assets/brand-lockup-on-dark.png" alt="Bling Berry"></p>
+            <p class="footer-line">Photograph well. Wear better.</p>
+            <div class="footer-row">
+                <nav class="footer-nav" aria-label="Footer">
+                    <a href="Bangles.html">Bangles</a>
+                    <a href="Watches.html">Watches</a>
+                    <a href="About.html">About</a>
+                    <a href="Reviews.html">Reviews</a>
+                    <a href="index.html#order">Order</a>
+                </nav>
+                <p class="footer-talk">
+                    <a href="https://www.instagram.com/blingberyyy/" target="_blank" rel="noopener">Instagram</a>
+                    <a href="https://wa.me/918668782212?text=Hi%20Bling%20Berry%2C%20I%27d%20like%20to%20order." target="_blank" rel="noopener">WhatsApp</a>
+                </p>
+            </div>
+            <div class="footer-base">
+                <span>© 2026 Bling Berry</span>
+                <span>India</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            const menuBtn = document.getElementById("menu-btn");
+            const mobileNav = document.getElementById("mobile-nav");
+            if (menuBtn && mobileNav) {
+                menuBtn.addEventListener("click", function () {
+                    const open = mobileNav.classList.toggle("is-open");
+                    menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+                });
+            }
+
+            const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const reveals = document.querySelectorAll(".reveal");
+
+            if (reduce || !("IntersectionObserver" in window)) {
+                reveals.forEach(function (el) { el.classList.add("is-in"); });
+                return;
+            }
+
+            const io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-in");
+                        io.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.08, rootMargin: "0px 0px -3% 0px" });
+
+            reveals.forEach(function (el) {
+                if (el.classList.contains("principle")) return;
+                const box = el.getBoundingClientRect();
+                if (box.top < window.innerHeight * 0.92) el.classList.add("is-in");
+                io.observe(el);
+            });
+
+            const cards = Array.prototype.slice.call(document.querySelectorAll(".principle.reveal"));
+            const armCard = function (index) {
+                if (index >= cards.length) return;
+                const el = cards[index];
+                const cardIo = new IntersectionObserver(function (entries) {
+                    if (!entries[0] || !entries[0].isIntersecting) return;
+                    cardIo.disconnect();
+                    window.setTimeout(function () {
+                        el.classList.add("is-in");
+                        armCard(index + 1);
+                    }, index === 0 ? 80 : 340);
+                }, { threshold: 0.28, rootMargin: "0px 0px -18% 0px" });
+                cardIo.observe(el);
+            };
+            armCard(0);
+
+            const layers = Array.prototype.slice.call(document.querySelectorAll("[data-speed]"));
+            if (!layers.length) return;
+
+            const state = layers.map(function (el) {
+                return { el: el, speed: Number(el.getAttribute("data-speed")) || 0, y: 0 };
+            });
+
+            let current = 0;
+            const tick = function () {
+                current += (window.scrollY - current) * 0.07;
+                state.forEach(function (item) {
+                    item.el.style.transform = "translate3d(0, " + (current * item.speed) + "px, 0)";
+                });
+                requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+        }());
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js?v=live2"></script>
+</body>
+</html>

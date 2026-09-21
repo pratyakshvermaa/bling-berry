@@ -1,0 +1,8 @@
+node_modules/
+playwright-report/
+test-results/
+dist/
+.env
+.DS_Store
+lan-users.json
+lan-users.json.tmp

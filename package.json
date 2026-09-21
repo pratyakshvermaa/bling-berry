@@ -1,0 +1,14 @@
+{
+  "name": "bling-berry",
+  "private": true,
+  "description": "Bling Berry storefront regression suite",
+  "scripts": {
+    "test": "playwright test",
+    "test:regression": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:install": "playwright install --with-deps chromium webkit"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
+  }
+}

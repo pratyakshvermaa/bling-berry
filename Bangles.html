@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangle stacks — Bling Berry</title>
+    <script>
+        try { sessionStorage.setItem("blingBerryEntered", "1"); } catch (e) {}
+    </script>
+    <link rel="icon" href="assets/logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=UnifrakturMaguntia&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #f8f0f0;
+            --cream-deep: #efe4e2;
+            --paper: #fffaf9;
+            --cherry: #902820;
+            --cherry-deep: #721f19;
+            --ink: #1a1212;
+            --muted: #6b5553;
+            --line: #e4d4d1;
+            --ease-silk: cubic-bezier(0.23, 0.12, 0.18, 1);
+            --ease-inout: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            font: 100%/1.55 "Outfit", system-ui, sans-serif;
+            color: var(--ink);
+            background: var(--cream);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        img { max-width: 100%; display: block; }
+        a { color: inherit; }
+
+        body {
+            color: var(--ink);
+            background:
+                radial-gradient(1200px 600px at 10% -10%, #f3d4d0 0%, transparent 55%),
+                radial-gradient(900px 500px at 100% 0%, #f7e6e2 0%, transparent 50%),
+                linear-gradient(180deg, #f8f0f0 0%, #efe4e2 100%);
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+
+        .container { width: min(1400px, calc(100% - 48px)); margin: 0 auto; }
+        header .container { width: min(1400px, calc(100% - 40px)); position: relative; z-index: 8; }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(247, 244, 242, 0.78);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+        }
+
+        .navbar {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            justify-self: start;
+        }
+
+        .brand-mark {
+            display: block;
+            width: auto;
+            height: 48px;
+            object-fit: contain;
+        }
+
+        .brand .brand-mark { height: 56px; }
+
+        .marquee {
+            position: relative;
+            z-index: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            border-bottom: 1px solid var(--line);
+            padding: 11px 0 7px;
+            background: rgba(255, 250, 249, 0.92);
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+        }
+
+        .marquee-track {
+            display: flex;
+            align-items: center;
+            width: max-content;
+            animation: drift 56s linear infinite;
+            color: var(--muted);
+            font-size: 0.47rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            will-change: transform;
+        }
+
+        .marquee:hover .marquee-track { animation-play-state: paused; }
+
+        .marquee-set {
+            display: flex;
+            align-items: center;
+            gap: 0.81rem;
+            padding-right: 0.81rem;
+        }
+
+        .marquee b { color: var(--cherry); font-weight: 600; }
+
+        header .marquee .brand-mark,
+        .brand-mark--marquee {
+            height: 24px;
+            width: auto;
+            border-radius: 0;
+        }
+
+        @keyframes drift {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        .nav-links {
+            display: none;
+            list-style: none;
+            align-items: center;
+            gap: 8px;
+            justify-self: center;
+        }
+
+        @media (min-width: 768px) { .nav-links { display: flex; } }
+
+        .nav-links > li { position: relative; }
+
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #1c1917;
+            padding: 8px 14px;
+            transition: color 0.45s var(--ease-inout);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.is-now { color: var(--cherry); }
+
+        .chevron { width: 11px; height: 11px; opacity: 0.75; }
+
+        .nav-links > li { position: relative; }
+
+        .drop {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            z-index: 20;
+            transform: translateX(-50%) translateY(8px);
+            min-width: 180px;
+            padding: 8px;
+            padding-top: 14px;
+            background: #fffaf9;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 12px 32px rgba(26, 18, 18, 0.08);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.42s var(--ease-silk), transform 0.42s var(--ease-silk);
+        }
+
+        .drop::before {
+            content: "";
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            height: 14px;
+        }
+
+        .nav-links > li:hover .drop,
+        .nav-links > li:focus-within .drop {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .drop a {
+            display: block;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            transition: background 0.4s var(--ease-inout), color 0.4s var(--ease-inout);
+        }
+
+        .drop a:hover { background: rgba(144, 40, 32, 0.06); color: var(--cherry); }
+
+        .nav-end {
+            display: flex;
+            align-items: center;
+            justify-self: end;
+            gap: 10px;
+        }
+
+        .nav-auth {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.35em;
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #1c1917;
+            padding: 8px 4px;
+            white-space: nowrap;
+            max-width: min(46vw, 16rem);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.45s var(--ease-inout);
+        }
+        .nav-auth:hover { color: var(--cherry); }
+        .nav-auth.is-welcome {
+            text-transform: none;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font: inherit;
+            max-width: min(46vw, 16rem);
+        }
+        .nav-auth.is-welcome:hover { color: inherit; }
+        .nav-auth-hello { color: var(--muted); font-weight: 400; }
+        .nav-auth-name {
+            font-family: "Playfair Display", Georgia, serif;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .nav-account { position: relative; }
+        .nav-account-chevron {
+            width: 9px;
+            height: 9px;
+            margin-left: 2px;
+            opacity: 0.4;
+            transition: transform 0.42s var(--ease-silk), opacity 0.42s var(--ease-silk);
+        }
+        .nav-account:hover .nav-account-chevron,
+        .nav-account.is-open .nav-account-chevron { opacity: 0.7; transform: rotate(180deg); }
+        .nav-account-drop {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            z-index: 6;
+            min-width: 148px;
+            padding: 8px;
+            padding-top: 14px;
+            background: #fffaf9;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 12px 32px rgba(26, 18, 18, 0.08);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(6px);
+            transition: opacity 0.42s var(--ease-silk), transform 0.42s var(--ease-silk);
+        }
+        .nav-account-drop::before {
+            content: "";
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            height: 14px;
+        }
+        .nav-account:hover .nav-account-drop,
+        .nav-account:focus-within .nav-account-drop,
+        .nav-account.is-open .nav-account-drop {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        .nav-account-drop a,
+        .nav-account-drop button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 8px;
+            background: none;
+            font: inherit;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink);
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.4s var(--ease-inout), color 0.4s var(--ease-inout);
+        }
+        .nav-account-drop a:hover,
+        .nav-account-drop button:hover {
+            background: rgba(144, 40, 32, 0.06);
+            color: var(--cherry);
+        }
+
+        .menu-btn {
+            display: inline-flex;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: transparent;
+            cursor: pointer;
+        }
+
+        @media (min-width: 768px) { .menu-btn { display: none; } }
+
+        .menu-btn span,
+        .menu-btn span::before,
+        .menu-btn span::after {
+            display: block;
+            width: 16px;
+            height: 1px;
+            background: var(--ink);
+            position: relative;
+        }
+
+        .menu-btn span::before,
+        .menu-btn span::after { content: ""; position: absolute; left: 0; }
+        .menu-btn span::before { top: -5px; }
+        .menu-btn span::after { top: 5px; }
+
+        .mobile-nav {
+            display: none;
+            border-top: 1px solid var(--line);
+            padding: 12px 20px 16px;
+        }
+
+        .mobile-nav.is-open { display: flex; flex-direction: column; gap: 4px; }
+        @media (min-width: 768px) { .mobile-nav { display: none !important; } }
+
+        .mobile-nav a {
+            display: flex;
+            padding: 10px 4px;
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .page-hero {
+            padding: 56px 0 48px;
+        }
+
+        .hero-split {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .kicker {
+            color: var(--cherry);
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .kicker .meta {
+            color: #8a7470;
+            letter-spacing: 0.14em;
+        }
+
+        .page-hero h1 {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(1.2rem, 6.2vw, 4.8rem);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            line-height: 1;
+            text-transform: uppercase;
+            text-shadow:
+                0 2px 0 rgba(144, 40, 32, 0.12),
+                0 10px 28px rgba(26, 18, 18, 0.16);
+        }
+
+        .lede {
+            max-width: min(28rem, 100%);
+            margin: 0;
+            padding-bottom: 0.35em;
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
+
+        .facts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+            margin-top: 8px;
+            max-width: 100%;
+            color: var(--muted);
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .facts span { color: var(--cherry); }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 4px 4px;
+            margin-top: 40px;
+            padding-top: 20px;
+            padding-bottom: 10px;
+            border-top: 1px solid rgba(228, 212, 209, 0.9);
+        }
+
+        .filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            padding: 10px 14px;
+            border: 0;
+            background: none;
+            font: inherit;
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #8a7470;
+            cursor: pointer;
+            border-radius: 999px;
+            transition: color 0.45s var(--ease-inout), background 0.45s var(--ease-inout), transform 180ms var(--ease-silk);
+        }
+
+        .filter:hover { color: var(--ink); }
+        .filter:active { transform: scale(0.985); }
+
+        .filter.is-on {
+            color: var(--ink);
+            background: rgba(255, 250, 249, 0.7);
+        }
+
+        .filter:focus-visible {
+            outline: 2px solid var(--cherry);
+            outline-offset: 2px;
+        }
+
+        .swatch {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            box-shadow: inset 0 0 0 1px rgba(26, 18, 18, 0.14);
+            flex-shrink: 0;
+        }
+
+        .look.is-off { display: none; }
+
+        .look {
+            padding: clamp(3rem, 6vh, 5.5rem) 0;
+        }
+
+        .look.is-right {
+            padding-top: clamp(5rem, 9vh, 8rem);
+        }
+
+        .look .container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            gap: clamp(2.2rem, 4.5vw, 4rem);
+        }
+
+        .look-grid.one,
+        .look-grid.two {
+            opacity: 0;
+            transition:
+                opacity 2.2s var(--ease-silk),
+                transform 2.2s var(--ease-silk),
+                filter 2.2s var(--ease-silk);
+        }
+
+        .look[data-reveal="rise"]  .look-grid.one,
+        .look[data-reveal="rise"]  .look-grid.two { transform: translate3d(0, 2.4rem, 0); }
+        .look[data-reveal="slide"] .look-grid.one,
+        .look[data-reveal="slide"] .look-grid.two { transform: translate3d(-2rem, 0.5rem, 0); opacity: 0; }
+        .look[data-reveal="scale"] .look-grid.one,
+        .look[data-reveal="scale"] .look-grid.two { transform: scale(0.93); filter: blur(4px); }
+        .look[data-reveal="drift"] .look-grid.one,
+        .look[data-reveal="drift"] .look-grid.two { transform: translate3d(1.8rem, 0.8rem, 0); }
+        .look[data-reveal="soft"]  .look-grid.one,
+        .look[data-reveal="soft"]  .look-grid.two { transform: translate3d(0, 1.4rem, 0); filter: blur(5px); }
+
+        .look.is-in .look-grid.one,
+        .look.is-in .look-grid.two {
+            opacity: 1;
+            transform: none;
+            filter: none;
+        }
+
+        .look-head {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            order: 2;
+            flex: 0 1 33.5rem;
+            min-width: 0;
+            max-width: 33.5rem;
+            margin: 0;
+            padding-top: 0;
+            overflow: visible;
+        }
+
+        .look-head > * {
+            opacity: 0;
+            transform: translate3d(0, 1rem, 0);
+            transition:
+                opacity 2s var(--ease-silk),
+                transform 2s var(--ease-silk);
+        }
+
+        .look.is-in .look-head > * {
+            opacity: 1;
+            transform: none;
+        }
+
+        .look.is-in .look-head > *:nth-child(1) { transition-delay: 340ms; }
+        .look.is-in .look-head > *:nth-child(2) { transition-delay: 480ms; }
+        .look.is-in .look-head > *:nth-child(3) { transition-delay: 600ms; }
+        .look.is-in .look-head > *:nth-child(4) { transition-delay: 710ms; }
+        .look.is-in .look-head > *:nth-child(5) { transition-delay: 810ms; }
+
+        .look-head h2 {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(1.45rem, 2.4vw, 1.95rem);
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .look-head > p {
+            max-width: 33.5rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .look-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 0 0;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(255, 250, 249, 0.72);
+            color: var(--muted);
+            font-size: 0.64rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .look-reel {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 10px;
+            color: var(--cherry);
+            font-size: 0.64rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(144, 40, 32, 0.28);
+            opacity: 1;
+            transform: none;
+            transition: color 0.35s var(--ease-silk), border-color 0.35s var(--ease-silk);
+        }
+
+        .look-reel:hover {
+            color: var(--cherry-deep);
+            border-bottom-color: var(--cherry);
+        }
+
+        .look-head a.look-link,
+        .dp-card-info a.look-link {
+            color: var(--cherry);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(144, 40, 32, 0.28);
+        }
+
+        .look-head a.look-link:hover,
+        .dp-card-info a.look-link:hover {
+            border-bottom-color: var(--cherry);
+        }
+
+        .look-head .price {
+            display: inline-flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: baseline;
+            gap: 0.45em;
+            margin-top: 12px;
+            font-family: Outfit, system-ui, -apple-system, sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+            color: var(--cherry);
+            line-height: 1;
+        }
+
+        .price-from {
+            font-size: 0.64rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .price-amount {
+            flex-direction: row;
+            align-items: baseline;
+            gap: 0.08em;
+        }
+
+        .price-currency {
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            font-weight: 600;
+            font-size: 0.92em;
+            line-height: 1;
+        }
+
+        .price-num {
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+
+        .price-from,
+        .price-amount,
+        .price-currency,
+        .price-num {
+            display: none !important;
+        }
+
+        html.bb-signed-in .price-from,
+        html.bb-signed-in .price-currency,
+        html.bb-signed-in .price-num { display: inline !important; }
+        html.bb-signed-in .price-amount { display: inline-flex !important; }
+
+        .look-grid.one,
+        .look-grid.two {
+            order: 1;
+            flex: 0 0 auto;
+            width: auto;
+            max-width: none;
+        }
+
+        .look.is-right .look-grid.one,
+        .look.is-right .look-grid.two { order: 2; }
+        .look.is-right .look-head { order: 1; }
+
+        .inquire-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .logo-btn,
+        .inquire {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            margin: 0;
+            padding: 0;
+            border: none;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 110%, #fdf497 0 10%, #fd5949 45%, #d6249f 62%, #285AEB 100%);
+            color: #fff;
+            cursor: pointer;
+            text-decoration: none;
+            flex: 0 0 44px;
+            touch-action: manipulation;
+            transition: transform 180ms var(--ease-silk), filter 0.45s var(--ease-inout);
+        }
+
+        .logo-btn svg,
+        .inquire svg {
+            width: 22px;
+            height: 22px;
+            display: block;
+        }
+
+        .logo-btn:active,
+        .inquire:active { transform: scale(0.985); }
+
+        .logo-btn:hover,
+        .inquire:hover { filter: brightness(1.08); }
+
+        .logo-wa,
+        .inquire-wa {
+            background: #25D366;
+        }
+
+        .draft-sheet {
+            position: fixed;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            z-index: 140;
+            display: none;
+            padding: 18px 18px 16px;
+            border-radius: 22px;
+            background: rgba(255, 250, 249, 0.92);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 18px 50px rgba(26, 18, 18, 0.22);
+            color: var(--ink);
+        }
+
+        .draft-sheet.is-on { display: block; }
+
+        .draft-sheet p {
+            font-size: 0.82rem;
+            color: var(--muted);
+            margin-bottom: 10px;
+            padding-right: 28px;
+        }
+
+        .draft-sheet textarea {
+            width: 100%;
+            min-height: 7.5rem;
+            resize: none;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px;
+            font: inherit;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            background: var(--paper);
+            color: var(--ink);
+        }
+
+        .draft-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .draft-actions .btn { flex: 1; }
+
+        .draft-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 50%;
+            background: transparent;
+            color: var(--muted);
+            font-size: 1.4rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            z-index: 90;
+            transform: translateX(-50%) translateY(12px);
+            opacity: 0;
+            pointer-events: none;
+            max-width: min(30rem, calc(100% - 32px));
+            padding: 12px 18px;
+            border-radius: 999px;
+            background: var(--ink);
+            color: var(--cream);
+            font-size: 0.82rem;
+            line-height: 1.4;
+            text-align: center;
+            transition: opacity 0.55s var(--ease-silk), transform 0.55s var(--ease-silk);
+        }
+
+        .toast.is-on {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .look-grid,
+        .look-grid.three,
+        .look-grid.single {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            max-width: none;
+        }
+
+        .shot {
+            padding: 0;
+            border: 0;
+            background: var(--paper);
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: zoom-in;
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 5;
+        }
+
+        .shot img,
+        .shot.tall img {
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+            object-fit: cover;
+            transition: transform 1.5s var(--ease-silk);
+        }
+
+        .shot:hover img { transform: scale(1.03); }
+
+        .look-grid.one { grid-template-columns: 20.5rem; }
+        .look-grid.two { grid-template-columns: 20.5rem 20.5rem; gap: 10px; }
+
+        .look-grid.one .shot,
+        .look-grid.two .shot,
+        .shot.frame,
+        .shot.wide {
+            width: 20.5rem;
+            aspect-ratio: 4 / 5;
+            background: #f3e8e4;
+            border-radius: 18px;
+        }
+
+        .look-grid.one .shot img,
+        .look-grid.two .shot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .cta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            text-align: center;
+            padding: clamp(3rem, 6vh, 5rem) 0 clamp(5rem, 10vh, 8rem);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--cherry);
+            color: var(--cream);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 13px 22px;
+            border-radius: 999px;
+            transition: transform 180ms var(--ease-silk), background 0.5s var(--ease-inout);
+        }
+
+        .btn:hover { background: var(--cherry-deep); transform: translateY(-1px); }
+        .btn:active { transform: scale(0.985); }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--ink);
+            border: 1px solid var(--line);
+        }
+
+        .btn-ghost:hover {
+            background: var(--paper);
+        }
+
+        footer {
+            background: var(--ink);
+            color: var(--cream);
+            padding: 36px 0 14px;
+            text-align: left;
+        }
+
+        .footer-mark {
+            margin: 0 0 2px;
+            line-height: 0;
+        }
+
+        .footer-mark .brand-mark {
+            display: block;
+            height: auto;
+            width: min(10.5rem, 46vw);
+        }
+
+        .footer-line {
+            margin: 0 0 22px;
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(0.92rem, 1.6vw, 1.08rem);
+            font-style: italic;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: rgba(248, 240, 240, 0.5);
+        }
+
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px 24px;
+            flex-wrap: wrap;
+            padding-bottom: 14px;
+        }
+
+        .footer-nav,
+        .footer-talk {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px 26px;
+            margin: 0;
+            min-width: 0;
+        }
+
+        footer a {
+            color: rgba(248, 240, 240, 0.58);
+            text-decoration: none;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            transition: color 0.45s var(--ease-inout);
+        }
+
+        footer a:hover { color: var(--cream); }
+
+        .footer-base {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid rgba(248, 240, 240, 0.1);
+            padding-top: 10px;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            color: rgba(248, 240, 240, 0.36);
+        }
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 80;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(26, 18, 18, 0.84);
+            padding: 28px;
+        }
+
+        .lightbox.is-open { display: flex; }
+
+        .lightbox img {
+            max-width: min(1080px, 100%);
+            max-height: 88vh;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .lightbox-close,
+        .lightbox-nav {
+            position: absolute;
+            border: 0;
+            background: rgba(248, 240, 240, 0.12);
+            color: #fff;
+            cursor: pointer;
+            border-radius: 999px;
+        }
+
+        .lightbox-close {
+            top: 18px;
+            right: 18px;
+            width: 44px;
+            height: 44px;
+            font-size: 1.4rem;
+        }
+
+        .lightbox-nav {
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            font-size: 1.5rem;
+        }
+
+        .lightbox-nav.prev { left: 16px; }
+        .lightbox-nav.next { right: 16px; }
+
+        @media (max-width: 1180px) {
+            .look-grid.two { grid-template-columns: 20.5rem; }
+        }
+
+        @media (max-width: 800px) {
+            .brand .brand-mark { height: 48px; }
+            .lede, .look-head > p { max-width: 100%; overflow-wrap: break-word; }
+            .facts { letter-spacing: 0.1em; gap: 6px 12px; }
+            .filter { padding: 8px 10px; letter-spacing: 0.12em; }
+            .look-grid,
+            .look-grid.three,
+            .look-grid.single { grid-template-columns: 1fr; }
+            .look-grid.one,
+            .look-grid.two { grid-template-columns: min(20.5rem, 80vw); }
+            .look { padding: 2.5rem 0 2.5rem; }
+            .look.is-right { padding-top: 2.5rem; }
+            .look .container {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 16px;
+            }
+            .look-head,
+            .look.is-right .look-head {
+                order: 2;
+                flex: none;
+                width: 100%;
+                max-width: none;
+            }
+            .look-grid.one,
+            .look-grid.two,
+            .look.is-right .look-grid.one,
+            .look.is-right .look-grid.two {
+                order: 1;
+                flex: none;
+                width: auto;
+                max-width: none;
+            }
+            .look-grid.one .shot,
+            .look-grid.two .shot {
+                width: min(20.5rem, 80vw);
+            }
+            .footer-mark .brand-mark { width: min(10rem, 52vw); }
+            .footer-row { display: grid; gap: 12px; }
+            .footer-nav, .footer-talk { display: flex; flex-wrap: wrap; width: 100%; gap: 8px 18px; }
+            .footer-nav a, .footer-talk a { letter-spacing: 0.1em; font-size: 0.68rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .marquee-track { animation: none; }
+            .shot img { transition: none; }
+            .look-grid.one,
+            .look-grid.two,
+            .look-head > * {
+                opacity: 1;
+                transform: none;
+                filter: none;
+                transition: opacity 0.4s ease;
+            }
+        }
+    </style>
+</head>
+<body data-product-category="bangles">
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a class="brand" href="index.html">
+                    <img class="brand-mark" src="assets/bling-berry-logo.png" alt="Bling Berry">
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li>
+                        <a class="is-now" href="index.html#shop">
+                            Shop
+                            <svg class="chevron" viewBox="0 0 12 12" fill="none" aria-hidden>
+                                <path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                        <div class="drop">
+                            <a href="Bangles.html" aria-current="page">Bangles</a>
+                            <a href="Watches.html">Watches</a>
+                            <a href="index.html#shop">All collections</a>
+                        </div>
+                    </li>
+                    <li><a href="About.html">About</a></li>
+                    <li><a href="Reviews.html">Reviews</a></li>
+                    <li><a href="index.html#order">Order</a></li>
+                </ul>
+                <div class="nav-end">
+                    <a class="nav-auth" href="login.html">Login</a>
+                    <button class="menu-btn" type="button" id="menu-btn" aria-label="Open menu" aria-expanded="false">
+                        <span></span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+        <div class="mobile-nav" id="mobile-nav">
+            <a href="index.html">Home</a>
+            <a href="index.html#shop">Shop</a>
+            <a href="Bangles.html" aria-current="page">Bangles</a>
+            <a href="Watches.html">Watches</a>
+            <a href="About.html">About</a>
+            <a href="Reviews.html">Reviews</a>
+            <a href="index.html#order">Order</a>
+            <a class="nav-auth" href="login.html">Login</a>
+        </div>
+        <div class="marquee" aria-hidden="true">
+            <div class="marquee-track">
+                <span class="marquee-set">
+                    <img class="brand-mark brand-mark--marquee" src="assets/brand-lockup.png" alt=""><b>·</b>
+                    <span>Photograph well</span><b>·</b>
+                    <span>Wear better</span><b>·</b>
+                    <span>Honest prices</span><b>·</b>
+                    <span>Anti tarnish</span><b>·</b>
+                    <span>Pan India</span><b>·</b>
+                </span>
+                <span class="marquee-set">
+                    <img class="brand-mark brand-mark--marquee" src="assets/brand-lockup.png" alt=""><b>·</b>
+                    <span>Photograph well</span><b>·</b>
+                    <span>Wear better</span><b>·</b>
+                    <span>Honest prices</span><b>·</b>
+                    <span>Anti tarnish</span><b>·</b>
+                    <span>Pan India</span><b>·</b>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <div class="container">
+                <div class="hero-split">
+                    <div>
+                        <p class="kicker"><span class="meta" id="look-count">9 looks</span></p>
+                        <h1>Bangle stacks</h1>
+                    </div>
+                    <p class="lede">Resin, wood, gold, and tortoise. Stacks made to photograph well and wear better.</p>
+                    <p class="facts">Resin <span>·</span> Wood <span>·</span> Gold <span>·</span> Anti-tarnish</p>
+                </div>
+                <div class="filters" role="group" aria-label="Filter by color">
+                    <button class="filter is-on" type="button" data-color="all" aria-pressed="true">All</button>
+                    <button class="filter" type="button" data-color="honey" aria-pressed="false"><span class="swatch" style="background:#e2b84a"></span>Honey</button>
+                    <button class="filter" type="button" data-color="turquoise" aria-pressed="false"><span class="swatch" style="background:#2aa3a0"></span>Turquoise</button>
+                    <button class="filter" type="button" data-color="ivory" aria-pressed="false"><span class="swatch" style="background:#f4ebe3"></span>Ivory</button>
+                    <button class="filter" type="button" data-color="tortoise" aria-pressed="false"><span class="swatch" style="background:#7a3e1d"></span>Tortoise</button>
+                    <button class="filter" type="button" data-color="sky" aria-pressed="false"><span class="swatch" style="background:#8eb8dc"></span>Sky</button>
+                    <button class="filter" type="button" data-color="peach" aria-pressed="false"><span class="swatch" style="background:#e0a07a"></span>Peach</button>
+                    <button class="filter" type="button" data-color="wood" aria-pressed="false"><span class="swatch" style="background:#6b4a32"></span>Wood</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="look" data-color="honey" data-slug="butter-stack">
+            <div class="container">
+                <div class="look-head">
+                    <div>
+                        <p class="kicker">01</p>
+                        <h2>Butter stack</h2>
+                    </div>
+                    <p>Honey resin, a gold cuff, and a slim ivory bangle. The stack that looks like sunlight on skin.</p>
+                    <div class="look-meta">
+                        <span class="chip">Honey resin</span>
+                        <span class="chip">Gold cuff</span>
+                        <span class="chip">Ivory</span>
+                    </div>
+                    <p class="price"><span class="price-amount"><span class="price-currency">₹</span><span class="price-num">499</span></span></p>
+                </div>
+                <div class="look-grid two">
+                    <button class="shot" type="button" data-full="assets/bangles/butter-wrist.jpg"><img src="assets/bangles/butter-wrist.jpg" alt="Butter, gold, and ivory bangles on a wrist"></button>
+                    <button class="shot" type="button" data-full="assets/bangles/butter-dress.jpg"><img src="assets/bangles/butter-dress.jpg" alt="Butter stack worn with a yellow floral dress"></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="look" data-color="honey tortoise" data-slug="honey-tortoise">
+            <div class="container">
+                <div class="look-head">
+                    <div>
+                        <p class="kicker">02</p>
+                        <h2>Honey tortoise</h2>
+                    </div>
+                    <p>The same honey cuff, gold, and a dark tortoise ring. A warmer, deeper stack.</p>
+                    <div class="look-meta">
+                        <span class="chip">Honey resin</span>
+                        <span class="chip">Gold</span>
+                        <span class="chip">Tortoise</span>
+                    </div>
+                    <p class="price"><span class="price-amount"><span class="price-currency">₹</span><span class="price-num">499</span></span></p>
+                </div>
+                <div class="look-grid one">
+                    <button class="shot frame" type="button" data-full="assets/bangles/butter-collage.jpg"><img src="assets/bangles/butter-collage.jpg" alt="Honey, gold, and tortoise bangle stack"></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="look" data-color="turquoise" data-slug="turquoise-stack">
+            <div class="container">
+                <div class="look-head">
+                    <div>
+                        <p class="kicker">03</p>
+                        <h2>Turquoise stack</h2>
+                    </div>
+                    <p>Marble turquoise, gold, and a slim bamboo cuff. Made for blue florals and hard sunlight.</p>
+                    <div class="look-meta">
+                        <span class="chip">Turquoise</span>
+                        <span class="chip">Gold</span>
+                        <span class="chip">Bamboo cuff</span>
+                    </div>
+                    <p class="price"><span class="price-amount"><span class="price-currency">₹</span><span class="price-num">499</span></span></p>
+                </div>
+                <div class="look-grid two">
+                    <button class="shot" type="button" data-full="assets/bangles/turquoise-dress.jpg"><img src="assets/bangles/turquoise-dress.jpg" alt="Turquoise bangle stack on a wrist"></button>
+                    <button class="shot" type="button" data-full="assets/bangles/turquoise-look.jpg"><img src="assets/bangles/turquoise-look.jpg" alt="Turquoise stack with a floral dress"></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="look" data-color="ivory" data-slug="ivory-stack">
+            <div class="container">
+                <div class="look-head">
+                    <div>
+                        <p class="kicker">04</p>
+                        <h2>Ivory stack</h2>
+                    </div>
+                    <p>Carved ivory resin framed in gold. Soft, marble, made for cream florals.</p>
+                    <div class="look-meta">
+                        <span class="chip">Ivory resin</span>
+                        <span class="chip">Gold</span>
+                    </div>
+                    <p class="price"><span class="price-amount"><span class="price-currency">₹</span><span class="price-num">499</span></span></p>
+                </div>
+                <div class="look-grid one">
+                    <button class="shot frame" type="button" data-full="assets/bangles/ivory-dress.jpg"><img src="assets/bangles/ivory-dress.jpg" alt="Ivory and gold bangles on a wrist"></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="look" data-color="tortoise" data-slug="tortoise-stack">
+            <div class="container">
+                <div class="look-head">
+                    <div>
+                        <p class="kicker">05</p>
+                        <h2>Tortoise stack</h2>
+                    </div>
+                    <p>Bubble tortoise resin with gold. Amber, glossy, a little vintage.</p>
+                    <div class="look-meta">
+                        <span class="chip">Tortoise resin</span>
+                        <span class="chip">Gold</span>
+                    </div>
+                    <p class="price"><span class="price-amount"><span class="price-currency">₹</span><span class="price-num">499</span></span></p>
+                </div>
+                <div class="look-grid one">
+                    <button class="shot frame" type="button" data-full="assets/bangles/tortoise-dress.jpg"><img src="assets/bangles/tortoise-dress.jpg" alt="Tortoise and gold bangles worn with a floral dress"></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="look" data-color="sky" data-slug="sky-stack">
+            <div class="container">
+                <div class="look-head">
+                    <div>
+                        <p class="kicker">06</p>
+                        <h2>Sky stack</h2>
+                    </div>
+                    <p>Two blues - faceted and bubble - with gold in between. Cool, glossy, not quiet.</p>
+                    <div class="look-meta">
+                        <span class="chip">Faceted</span>
+                        <span class="chip">Bubble</span>
+                        <span class="chip">Gold</span>
+                    </div>
+                    <p class="price"><span class="price-amount"><span class="price-currency">₹</span><span class="price-num">499</span></span></p>
+                </div>
+                <div class="look-grid two">
+                    <button class="shot" type="button" data-full="assets/bangles/sky-stack.jpg"><img src="assets/bangles/sky-stack.jpg" alt="Sky blue bangle stack on a wrist"></button>
+                    <button class="shot" type="button" data-full="assets/bangles/sky-dress.jpg"><img src="assets/bangles/sky-dress.jpg" alt="Sky stack with a blue floral dress"></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="look" data-color="peach" data-slug="honey-peach">
+            <div class="container">
+                <div class="look-head">
+                    <div>
+                        <p class="kicker">07</p>
+                        <h2>Honey peach</h2>
+                    </div>
+                    <p>Carved peach resin with gold companions. Two stacks, same glow.</p>
+                    <div class="look-meta">
+                        <span class="chip">Peach resin</span>
+                        <span class="chip">Gold</span>
+                    </div>
+                    <p class="price"><span class="price-amount"><span class="price-currency">₹</span><span class="price-num">499</span></span></p>
+                </div>
+                <div class="look-grid one">
+                    <button class="shot frame" type="button" data-full="assets/bangles/honey-peach.jpg"><img src="assets/bangles/honey-peach.jpg" alt="Honey peach bangle stacks on hang tags"></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="look" data-color="wood" data-slug="studded-wood">
+            <div class="container">
+                <div class="look-head">
+                    <div>
+                        <p class="kicker">08</p>
+                        <h2>Studded wood</h2>
+                    </div>
+                    <p>Four stains, silver studs and pyramids. Heirloom weight, statement stack.</p>
+                    <div class="look-meta">
+                        <span class="chip">Wood</span>
+                        <span class="chip">Silver studs</span>
+                    </div>
+                    <p class="price"><span class="price-amount"><span class="price-currency">₹</span><span class="price-num">499</span></span></p>
+                </div>
+                <div class="look-grid one">
+                    <button class="shot frame" type="button" data-full="assets/bangles/studded-wood.jpg"><img src="assets/bangles/studded-wood.jpg" alt="Studded wooden bangles stacked on a wrist"></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="look" data-color="wood" data-slug="carved-wood">
+            <div class="container">
+                <div class="look-head">
+                    <div>
+                        <p class="kicker">09</p>
+                        <h2>Carved wood</h2>
+                    </div>
+                    <p>Four wood tones, smooth and sculpted. No metal - just grain.</p>
+                    <div class="look-meta">
+                        <span class="chip">Carved wood</span>
+                        <span class="chip">No metal</span>
+                    </div>
+                    <p class="price"><span class="price-amount"><span class="price-currency">₹</span><span class="price-num">499</span></span></p>
+                </div>
+                <div class="look-grid one">
+                    <button class="shot frame" type="button" data-full="assets/bangles/wood-carved.jpg"><img src="assets/bangles/wood-carved.jpg" alt="Carved wooden bangles in four wood tones"></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic product catalogue from Supabase -->
+        <section class="dynamic-products" id="dynamic-products" style="display:none;">
+            <div class="container">
+                <div class="section-head" style="text-align:center; margin-bottom:2rem;">
+                    <p class="kicker">Shop bangles</p>
+                    <h2>Browse the full collection</h2>
+                </div>
+                <div class="dp-grid" id="dp-grid"></div>
+            </div>
+        </section>
+
+        <style>
+            .dp-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 24px;
+                padding: 0 0 3rem;
+            }
+            .dp-card {
+                background: var(--paper);
+                border: 1px solid var(--line);
+                border-radius: 18px;
+                overflow: hidden;
+                box-shadow: 0 6px 24px rgba(26, 18, 18, 0.05);
+                transition: transform 0.5s var(--ease-silk), box-shadow 0.5s var(--ease-silk);
+            }
+            .dp-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 36px rgba(26, 18, 18, 0.1);
+            }
+            .dp-card img {
+                width: 100%;
+                aspect-ratio: 1;
+                object-fit: cover;
+            }
+            .dp-card-info {
+                padding: 16px 18px 20px;
+            }
+            .dp-card-info h3 {
+                font-family: "Playfair Display", Georgia, serif;
+                font-size: 1.05rem;
+                font-weight: 600;
+                margin-bottom: 4px;
+            }
+            .dp-card-info p {
+                font-size: 0.82rem;
+                color: var(--muted);
+                margin-bottom: 8px;
+                line-height: 1.4;
+            }
+            .dp-card-info .dp-price {
+                display: inline-flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-items: baseline;
+                gap: 0.45em;
+                font-family: Outfit, system-ui, sans-serif;
+                font-weight: 700;
+                font-size: 0.95rem;
+                color: var(--cherry);
+                white-space: nowrap;
+            }
+            .dp-card-info .dp-stock {
+                font-size: 0.72rem;
+                color: var(--muted);
+                margin-top: 4px;
+            }
+        </style>
+
+        <div class="cta">
+            <a class="logo-btn logo-ig" href="https://ig.me/m/blingberyyy" target="_blank" rel="noopener" aria-label="Message on Instagram">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.9.2 2.3.4.6.2 1 .5 1.5 1 .4.4.7.9 1 1.5.2.4.4 1.1.4 2.3.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.9-.4 2.3-.2.6-.5 1-1 1.5-.4.4-.9.7-1.5 1-.4.2-1.1.4-2.3.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.9-.2-2.3-.4-.6-.2-1-.5-1.5-1-.4-.4-.7-.9-1-1.5-.2-.4-.4-1.1-.4-2.3C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.2-1.9.4-2.3.2-.6.5-1 1-1.5.4-.4.9-.7 1.5-1 .4-.2 1.1-.4 2.3-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.2 0-3.5 0-4.8.1-1 .1-1.6.2-1.9.4-.5.2-.8.4-1.1.7-.3.3-.5.6-.7 1.1-.2.3-.3.9-.4 1.9-.1 1.2-.1 1.6-.1 4.8s0 3.5.1 4.8c.1 1 .2 1.6.4 1.9.2.5.4.8.7 1.1.3.3.6.5 1.1.7.3.2.9.3 1.9.4 1.2.1 1.6.1 4.8.1s3.5 0 4.8-.1c1-.1 1.6-.2 1.9-.4.5-.2.8-.4 1.1-.7.3-.3.5-.6.7-1.1.2-.3.3-.9.4-1.9.1-1.2.1-1.6.1-4.8s0-3.5-.1-4.8c-.1-1-.2-1.6-.4-1.9-.2-.5-.4-.8-.7-1.1-.3-.3-.6-.5-1.1-.7-.3-.2-.9-.3-1.9-.4-1.2-.1-1.6-.1-4.8-.1zm0 3.1a5 5 0 1 1 0 9.9 5 5 0 0 1 0-9.9zm0 1.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4zm6.3-2.6a1.2 1.2 0 1 1-2.3 0 1.2 1.2 0 0 1 2.3 0z"/></svg>
+            </a>
+            <a class="logo-btn logo-wa" href="https://wa.me/918668782212?text=Hi%20Bling%20Berry%2C%20I%27d%20like%20to%20order%20from%20Bangles." target="_blank" rel="noopener" aria-label="Message on WhatsApp">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.2-1.4A9.9 9.9 0 1 0 12.04 2zm5.8 14.2c-.24.68-1.4 1.24-1.94 1.32-.5.08-1.14.11-1.83-.11-.43-.13-.97-.31-1.67-.62-2.94-1.27-4.86-4.22-5-4.42-.16-.2-1.23-1.63-1.23-3.1 0-1.46.78-2.18 1.05-2.48.27-.3.6-.37.8-.37h.57c.18 0 .42-.07.66.5.24.59.82 2 .9 2.15.07.15.11.32.02.52-.1.2-.15.32-.3.49l-.44.52c-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.03 1.12 1 2.07 1.3 2.36 1.45.3.15.47.13.64-.07.17-.2.73-.85.93-1.14.2-.3.4-.25.67-.15.26.1 1.7.8 2 .95.29.14.48.22.55.34.08.12.08.68-.16 1.37z"/></svg>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p class="footer-mark"><img class="brand-mark" src="assets/bling-berry-logo-on-dark.png" alt="Bling Berry"></p>
+            <p class="footer-line">Photograph well. Wear better.</p>
+            <div class="footer-row">
+                <nav class="footer-nav" aria-label="Footer">
+                    <a href="Bangles.html">Bangles</a>
+                    <a href="Watches.html">Watches</a>
+                    <a href="About.html">About</a>
+                    <a href="Reviews.html">Reviews</a>
+                    <a href="index.html#order">Order</a>
+                </nav>
+                <p class="footer-talk">
+                    <a href="https://www.instagram.com/blingberyyy/" target="_blank" rel="noopener">Instagram</a>
+                    <a href="https://wa.me/918668782212?text=Hi%20Bling%20Berry%2C%20I%27d%20like%20to%20order%20from%20Bangles." target="_blank" rel="noopener">WhatsApp</a>
+                </p>
+            </div>
+            <div class="footer-base">
+                <span>© 2026 Bling Berry</span>
+                <span>India</span>
+            </div>
+        </div>
+    </footer>
+
+    <div class="draft-sheet" id="draft-sheet" role="dialog" aria-modal="true" aria-labelledby="draft-title">
+        <button class="draft-close" type="button" id="draft-close" aria-label="Close">×</button>
+        <p id="draft-title">Instagram can’t fill the chat. Copy this, then paste it in the DM.</p>
+        <textarea id="draft-text" readonly></textarea>
+        <div class="draft-actions">
+            <button class="btn" type="button" id="draft-copy">Copy</button>
+            <a class="logo-btn logo-ig" id="draft-open" href="https://ig.me/m/blingberyyy" target="_blank" rel="noopener" aria-label="Open Instagram chat">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.9.2 2.3.4.6.2 1 .5 1.5 1 .4.4.7.9 1 1.5.2.4.4 1.1.4 2.3.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.9-.4 2.3-.2.6-.5 1-1 1.5-.4.4-.9.7-1.5 1-.4.2-1.1.4-2.3.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.9-.2-2.3-.4-.6-.2-1-.5-1.5-1-.4-.4-.7-.9-1-1.5-.2-.4-.4-1.1-.4-2.3C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.2-1.9.4-2.3.2-.6.5-1 1-1.5.4-.4.9-.7 1.5-1 .4-.2 1.1-.4 2.3-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.2 0-3.5 0-4.8.1-1 .1-1.6.2-1.9.4-.5.2-.8.4-1.1.7-.3.3-.5.6-.7 1.1-.2.3-.3.9-.4 1.9-.1 1.2-.1 1.6-.1 4.8s0 3.5.1 4.8c.1 1 .2 1.6.4 1.9.2.5.4.8.7 1.1.3.3.6.5 1.1.7.3.2.9.3 1.9.4 1.2.1 1.6.1 4.8.1s3.5 0 4.8-.1c1-.1 1.6-.2 1.9-.4.5-.2.8-.4 1.1-.7.3-.3.5-.6.7-1.1.2-.3.3-.9.4-1.9.1-1.2.1-1.6.1-4.8s0-3.5-.1-4.8c-.1-1-.2-1.6-.4-1.9-.2-.5-.4-.8-.7-1.1-.3-.3-.6-.5-1.1-.7-.3-.2-.9-.3-1.9-.4-1.2-.1-1.6-.1-4.8-.1zm0 3.1a5 5 0 1 1 0 9.9 5 5 0 0 1 0-9.9zm0 1.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4zm6.3-2.6a1.2 1.2 0 1 1-2.3 0 1.2 1.2 0 0 1 2.3 0z"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Bangle photo">
+        <button class="lightbox-close" type="button" id="lightbox-close" aria-label="Close">×</button>
+        <button class="lightbox-nav prev" type="button" id="lightbox-prev" aria-label="Previous">‹</button>
+        <img id="lightbox-img" alt="">
+        <button class="lightbox-nav next" type="button" id="lightbox-next" aria-label="Next">›</button>
+    </div>
+
+    <script>
+        (function () {
+            const menuBtn = document.getElementById("menu-btn");
+            const mobileNav = document.getElementById("mobile-nav");
+            if (menuBtn && mobileNav) {
+                menuBtn.addEventListener("click", function () {
+                    const open = mobileNav.classList.toggle("is-open");
+                    menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+                });
+            }
+
+            const shots = Array.prototype.slice.call(document.querySelectorAll(".shot"));
+            const box = document.getElementById("lightbox");
+            const img = document.getElementById("lightbox-img");
+            let index = 0;
+
+            const visibleShots = function () {
+                return shots.filter(function (shot) {
+                    const look = shot.closest(".look");
+                    return look && !look.classList.contains("is-off");
+                });
+            };
+
+            const openAt = function (i) {
+                const list = visibleShots();
+                if (!list.length) return;
+                index = (i + list.length) % list.length;
+                const src = list[index].getAttribute("data-full");
+                const photo = list[index].querySelector("img");
+                img.src = src;
+                img.alt = photo ? photo.alt : "";
+                box.classList.add("is-open");
+            };
+
+            const close = function () {
+                box.classList.remove("is-open");
+                img.src = "";
+            };
+
+            shots.forEach(function (shot) {
+                shot.addEventListener("click", function () {
+                    const list = visibleShots();
+                    openAt(list.indexOf(shot));
+                });
+            });
+
+            const looks = Array.prototype.slice.call(document.querySelectorAll(".look"));
+            const filters = Array.prototype.slice.call(document.querySelectorAll(".filter"));
+            const count = document.getElementById("look-count");
+
+            const staggerLooks = function () {
+                const visible = looks.filter(function (look) {
+                    return !look.classList.contains("is-off");
+                });
+                looks.forEach(function (look) {
+                    look.classList.remove("is-right");
+                });
+                visible.forEach(function (look, i) {
+                    if (i % 2 === 1) look.classList.add("is-right");
+                });
+            };
+
+            const applyFilter = function (color) {
+                let shown = 0;
+                looks.forEach(function (look) {
+                    const colors = (look.getAttribute("data-color") || "").split(/\s+/);
+                    const on = color === "all" || colors.indexOf(color) !== -1;
+                    look.classList.toggle("is-off", !on);
+                    if (on) shown += 1;
+                });
+                if (count) count.textContent = shown + (shown === 1 ? " look" : " looks");
+                staggerLooks();
+            };
+
+            filters.forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    const color = btn.getAttribute("data-color");
+                    filters.forEach(function (other) {
+                        const on = other === btn;
+                        other.classList.toggle("is-on", on);
+                        other.setAttribute("aria-pressed", on ? "true" : "false");
+                    });
+                    applyFilter(color);
+                });
+            });
+
+            staggerLooks();
+
+            var styles = ["rise", "slide", "scale", "drift", "soft"];
+            looks.forEach(function (look, i) {
+                look.setAttribute("data-reveal", styles[i % styles.length]);
+            });
+
+            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+            if (reduceMotion || !("IntersectionObserver" in window)) {
+                looks.forEach(function (look) { look.classList.add("is-in"); });
+            } else {
+                const io = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (!entry.isIntersecting) return;
+                        const look = entry.target;
+                        io.unobserve(look);
+                        window.setTimeout(function () {
+                            void look.offsetWidth;
+                            look.classList.add("is-in");
+                        }, 60);
+                    });
+                }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(function () {
+                        looks.forEach(function (look) { io.observe(look); });
+                    });
+                });
+            }
+
+            document.getElementById("lightbox-close").addEventListener("click", close);
+            document.getElementById("lightbox-prev").addEventListener("click", function () { openAt(index - 1); });
+            document.getElementById("lightbox-next").addEventListener("click", function () { openAt(index + 1); });
+            box.addEventListener("click", function (event) {
+                if (event.target === box) close();
+            });
+            document.addEventListener("keydown", function (event) {
+                if (!box.classList.contains("is-open")) return;
+                if (event.key === "Escape") close();
+                if (event.key === "ArrowLeft") openAt(index - 1);
+                if (event.key === "ArrowRight") openAt(index + 1);
+            });
+        }());
+
+        (function () {
+            const igChat = "https://ig.me/m/blingberyyy";
+            const wa = "https://wa.me/918668782212";
+            const categoryRaw = (document.body.getAttribute("data-product-category") || "collection").replace(/-/g, " ");
+            const categoryLabel = categoryRaw.charAt(0).toUpperCase() + categoryRaw.slice(1);
+            const svgIg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.9.2 2.3.4.6.2 1 .5 1.5 1 .4.4.7.9 1 1.5.2.4.4 1.1.4 2.3.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.9-.4 2.3-.2.6-.5 1-1 1.5-.4.4-.9.7-1.5 1-.4.2-1.1.4-2.3.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.9-.2-2.3-.4-.6-.2-1-.5-1.5-1-.4-.4-.7-.9-1-1.5-.2-.4-.4-1.1-.4-2.3C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.2-1.9.4-2.3.2-.6.5-1 1-1.5.4-.4.9-.7 1.5-1 .4-.2 1.1-.4 2.3-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.2 0-3.5 0-4.8.1-1 .1-1.6.2-1.9.4-.5.2-.8.4-1.1.7-.3.3-.5.6-.7 1.1-.2.3-.3.9-.4 1.9-.1 1.2-.1 1.6-.1 4.8s0 3.5.1 4.8c.1 1 .2 1.6.4 1.9.2.5.4.8.7 1.1.3.3.6.5 1.1.7.3.2.9.3 1.9.4 1.2.1 1.6.1 4.8.1s3.5 0 4.8-.1c1-.1 1.6-.2 1.9-.4.5-.2.8-.4 1.1-.7.3-.3.5-.6.7-1.1.2-.3.3-.9.4-1.9.1-1.2.1-1.6.1-4.8s0-3.5-.1-4.8c-.1-1-.2-1.6-.4-1.9-.2-.5-.4-.8-.7-1.1-.3-.3-.6-.5-1.1-.7-.3-.2-.9-.3-1.9-.4-1.2-.1-1.6-.1-4.8-.1zm0 3.1a5 5 0 1 1 0 9.9 5 5 0 0 1 0-9.9zm0 1.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4zm6.3-2.6a1.2 1.2 0 1 1-2.3 0 1.2 1.2 0 0 1 2.3 0z"/></svg>';
+            const svgWa = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2a9.9 9.9 0 0 0-8.5 14.9L2 22l5.2-1.4A9.9 9.9 0 1 0 12.04 2zm5.8 14.2c-.24.68-1.4 1.24-1.94 1.32-.5.08-1.14.11-1.83-.11-.43-.13-.97-.31-1.67-.62-2.94-1.27-4.86-4.22-5-4.42-.16-.2-1.23-1.63-1.23-3.1 0-1.46.78-2.18 1.05-2.48.27-.3.6-.37.8-.37h.57c.18 0 .42-.07.66.5.24.59.82 2 .9 2.15.07.15.11.32.02.52-.1.2-.15.32-.3.49l-.44.52c-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.03 1.12 1 2.07 1.3 2.36 1.45.3.15.47.13.64-.07.17-.2.73-.85.93-1.14.2-.3.4-.25.67-.15.26.1 1.7.8 2 .95.29.14.48.22.55.34.08.12.08.68-.16 1.37z"/></svg>';
+            const waDraft = function (name) {
+                if (name) {
+                    return "Hi Bling Berry, I'd like to inquire about " + name + " from " + categoryLabel + ".";
+                }
+                return "Hi Bling Berry, I'd like to order from " + categoryLabel + ".";
+            };
+
+            document.querySelectorAll(".look").forEach(function (look) {
+                const heading = look.querySelector("h2");
+                const head = look.querySelector(".look-head");
+                if (!heading || !head) return;
+                const name = heading.textContent.replace(/\s+/g, " ").trim();
+                const row = document.createElement("div");
+                row.className = "inquire-row";
+                const igBtn = document.createElement("a");
+                igBtn.className = "inquire";
+                igBtn.href = igChat;
+                igBtn.target = "_blank";
+                igBtn.rel = "noopener";
+                igBtn.setAttribute("aria-label", "Chat on Instagram");
+                igBtn.innerHTML = svgIg;
+                const waBtn = document.createElement("a");
+                waBtn.className = "inquire inquire-wa";
+                waBtn.href = wa + "?text=" + encodeURIComponent(waDraft(name));
+                waBtn.target = "_blank";
+                waBtn.rel = "noopener";
+                waBtn.setAttribute("aria-label", "Inquire on WhatsApp");
+                waBtn.innerHTML = svgWa;
+                row.appendChild(igBtn);
+                row.appendChild(waBtn);
+                head.appendChild(row);
+            });
+        }());
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js?v=live2"></script>
+    <script src="storefront-products.js?v=copy1"></script>
+</body>
+</html>

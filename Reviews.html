@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews — Bling Berry</title>
+    <script>
+        try { sessionStorage.setItem("blingBerryEntered", "1"); } catch (e) {}
+    </script>
+    <link rel="icon" href="assets/logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=UnifrakturMaguntia&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #f8f0f0;
+            --cream-deep: #efe4e2;
+            --paper: #fffaf9;
+            --cherry: #902820;
+            --cherry-deep: #721f19;
+            --ink: #1a1212;
+            --muted: #6b5553;
+            --line: #e4d4d1;
+            --gold: #c48a1a;
+            --ease-silk: cubic-bezier(0.23, 0.12, 0.18, 1);
+            --ease-inout: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            font: 100%/1.55 "Outfit", system-ui, sans-serif;
+            color: var(--ink);
+            background: var(--cream);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        img { max-width: 100%; display: block; }
+        a { color: inherit; }
+
+        body {
+            color: var(--ink);
+            background:
+                radial-gradient(1200px 600px at 10% -10%, #f3d4d0 0%, transparent 55%),
+                radial-gradient(900px 500px at 100% 0%, #f7e6e2 0%, transparent 50%),
+                linear-gradient(180deg, #f8f0f0 0%, #efe4e2 100%);
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+
+        .container { width: min(1400px, calc(100% - 48px)); margin: 0 auto; }
+        header .container { width: min(1400px, calc(100% - 40px)); position: relative; z-index: 8; }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(247, 244, 242, 0.78);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+        }
+
+        .navbar {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            justify-self: start;
+        }
+
+        .brand-mark {
+            display: block;
+            width: auto;
+            height: 48px;
+            object-fit: contain;
+        }
+
+        .brand .brand-mark { height: 56px; }
+
+        .marquee {
+            position: relative;
+            z-index: 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            border-bottom: 1px solid var(--line);
+            padding: 11px 0 7px;
+            background: rgba(255, 250, 249, 0.92);
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+        }
+
+        .marquee-track {
+            display: flex;
+            align-items: center;
+            width: max-content;
+            animation: drift 56s linear infinite;
+            color: var(--muted);
+            font-size: 0.47rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            will-change: transform;
+        }
+
+        .marquee:hover .marquee-track { animation-play-state: paused; }
+
+        .marquee-set {
+            display: flex;
+            align-items: center;
+            gap: 0.81rem;
+            padding-right: 0.81rem;
+        }
+
+        .marquee b { color: var(--cherry); font-weight: 600; }
+
+        header .marquee .brand-mark,
+        .brand-mark--marquee {
+            height: 24px;
+            width: auto;
+            border-radius: 0;
+        }
+
+        @keyframes drift {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .marquee-track { animation: none; }
+        }
+
+        .nav-links {
+            display: none;
+            list-style: none;
+            align-items: center;
+            gap: 8px;
+            justify-self: center;
+        }
+
+        @media (min-width: 768px) { .nav-links { display: flex; } }
+
+        .nav-links > li { position: relative; }
+
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #1c1917;
+            padding: 8px 14px;
+            transition: color 0.45s var(--ease-inout);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.is-now { color: var(--cherry); }
+
+        .chevron { width: 11px; height: 11px; opacity: 0.75; }
+
+        .nav-links > li { position: relative; }
+
+        .drop {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            z-index: 20;
+            transform: translateX(-50%) translateY(8px);
+            min-width: 180px;
+            padding: 8px;
+            padding-top: 14px;
+            background: #fffaf9;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 12px 32px rgba(26, 18, 18, 0.08);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.42s var(--ease-silk), transform 0.42s var(--ease-silk);
+        }
+
+        .drop::before {
+            content: "";
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            height: 14px;
+        }
+
+        .nav-links > li:hover .drop,
+        .nav-links > li:focus-within .drop {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .drop a {
+            display: block;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            transition: background 0.4s var(--ease-inout), color 0.4s var(--ease-inout);
+        }
+        .drop a:hover { background: rgba(144, 40, 32, 0.06); color: var(--cherry); }
+
+        .nav-end {
+            display: flex;
+            align-items: center;
+            justify-self: end;
+            gap: 10px;
+        }
+
+        .nav-auth {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.35em;
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #1c1917;
+            padding: 8px 4px;
+            white-space: nowrap;
+            max-width: min(46vw, 16rem);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.45s var(--ease-inout);
+        }
+        .nav-auth:hover { color: var(--cherry); }
+        .nav-auth.is-welcome {
+            text-transform: none;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font: inherit;
+            max-width: min(46vw, 16rem);
+        }
+        .nav-auth.is-welcome:hover { color: inherit; }
+        .nav-auth-hello { color: var(--muted); font-weight: 400; }
+        .nav-auth-name {
+            font-family: "Playfair Display", Georgia, serif;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .nav-account { position: relative; }
+        .nav-account-chevron {
+            width: 9px;
+            height: 9px;
+            margin-left: 2px;
+            opacity: 0.4;
+            transition: transform 0.42s var(--ease-silk), opacity 0.42s var(--ease-silk);
+        }
+        .nav-account:hover .nav-account-chevron,
+        .nav-account.is-open .nav-account-chevron { opacity: 0.7; transform: rotate(180deg); }
+        .nav-account-drop {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            z-index: 6;
+            min-width: 148px;
+            padding: 8px;
+            padding-top: 14px;
+            background: #fffaf9;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 12px 32px rgba(26, 18, 18, 0.08);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(6px);
+            transition: opacity 0.42s var(--ease-silk), transform 0.42s var(--ease-silk);
+        }
+        .nav-account-drop::before {
+            content: "";
+            position: absolute;
+            top: -12px;
+            left: 0;
+            right: 0;
+            height: 14px;
+        }
+        .nav-account:hover .nav-account-drop,
+        .nav-account:focus-within .nav-account-drop,
+        .nav-account.is-open .nav-account-drop {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        .nav-account-drop a,
+        .nav-account-drop button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 8px;
+            background: none;
+            font: inherit;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink);
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.4s var(--ease-inout), color 0.4s var(--ease-inout);
+        }
+        .nav-account-drop a:hover,
+        .nav-account-drop button:hover {
+            background: rgba(144, 40, 32, 0.06);
+            color: var(--cherry);
+        }
+
+        .menu-btn {
+            display: inline-flex;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: transparent;
+            cursor: pointer;
+        }
+
+        @media (min-width: 768px) { .menu-btn { display: none; } }
+
+        .menu-btn span,
+        .menu-btn span::before,
+        .menu-btn span::after {
+            display: block;
+            width: 16px;
+            height: 1px;
+            background: var(--ink);
+            position: relative;
+        }
+
+        .menu-btn span::before,
+        .menu-btn span::after { content: ""; position: absolute; left: 0; }
+        .menu-btn span::before { top: -5px; }
+        .menu-btn span::after { top: 5px; }
+
+        .mobile-nav { display: none; border-top: 1px solid var(--line); padding: 12px 20px 16px; }
+        .mobile-nav.is-open { display: flex; flex-direction: column; gap: 4px; }
+        @media (min-width: 768px) { .mobile-nav { display: none !important; } }
+
+        .mobile-nav a {
+            display: flex;
+            padding: 10px 4px;
+            text-decoration: none;
+            font-size: 0.78rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        main { padding: 48px 0 80px; }
+
+        .intro {
+            display: grid;
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        @media (min-width: 800px) {
+            .intro {
+                grid-template-columns: 1fr auto;
+                align-items: end;
+            }
+        }
+
+        .kicker {
+            color: var(--cherry);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(2rem, 4vw, 3.1rem);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            line-height: 1.12;
+            margin-top: 6px;
+        }
+
+        .lede {
+            max-width: 36rem;
+            color: var(--muted);
+            margin-top: 10px;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+            list-style: none;
+        }
+
+        .chips li {
+            border-radius: 999px;
+            padding: 6px 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            background: rgba(144, 40, 32, 0.08);
+            color: var(--cherry);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--cherry);
+            color: var(--cream);
+            border: none;
+            text-decoration: none;
+            font: inherit;
+            font-weight: 600;
+            font-size: 0.92rem;
+            padding: 12px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: transform 180ms var(--ease-silk), background 0.5s var(--ease-inout);
+        }
+
+        .btn:hover { background: var(--cherry-deep); transform: translateY(-1px); }
+        .btn:active { transform: scale(0.985); }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--ink);
+            border: 1px solid var(--line);
+        }
+
+        .score {
+            display: grid;
+            gap: 24px;
+            margin-bottom: 32px;
+            padding: 28px;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            background: rgba(255, 250, 249, 0.72);
+        }
+
+        @media (min-width: 800px) {
+            .score { grid-template-columns: 220px 1fr; }
+        }
+
+        .score-num {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: 4rem;
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        .gold { color: var(--gold); letter-spacing: 0.12em; }
+
+        .mix { display: grid; gap: 8px; }
+        .mix-row { display: grid; grid-template-columns: 2.4rem 1fr 2rem; gap: 10px; align-items: center; font-size: 0.78rem; color: var(--muted); }
+        .bar { height: 8px; border-radius: 999px; background: #eadcda; overflow: hidden; }
+        .bar > span { display: block; height: 100%; background: var(--cherry); border-radius: inherit; }
+
+        .list { display: grid; gap: 12px; }
+
+        .card {
+            padding: 20px 22px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: var(--paper);
+        }
+
+        .card h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 4px 0 8px;
+        }
+
+        .card p { color: var(--muted); font-size: 0.95rem; }
+        .meta { margin-top: 10px; font-size: 0.78rem; color: #8a7470; }
+        .tag {
+            display: inline-flex;
+            margin-left: 8px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(144, 40, 32, 0.08);
+            color: var(--cherry);
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+
+        .form-wrap {
+            display: grid;
+            grid-template-rows: 0fr;
+            margin: 0 0 0;
+            padding: 0 24px;
+            border: 1px solid transparent;
+            border-radius: 22px;
+            background: var(--paper);
+            opacity: 0;
+            overflow: hidden;
+            transition:
+                grid-template-rows 0.7s var(--ease-silk),
+                opacity 0.55s var(--ease-silk),
+                padding 0.7s var(--ease-silk),
+                margin 0.7s var(--ease-silk),
+                border-color 0.55s var(--ease-inout);
+        }
+
+        .form-wrap > form { min-height: 0; overflow: hidden; }
+
+        .form-wrap.is-on {
+            grid-template-rows: 1fr;
+            margin: 0 0 28px;
+            padding: 24px;
+            border-color: var(--line);
+            opacity: 1;
+        }
+
+        .form-grid { display: grid; gap: 14px; }
+        @media (min-width: 700px) { .form-grid.two { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 639px) {
+            .brand .brand-mark { height: 48px; }
+            .footer-mark .brand-mark { width: min(10rem, 52vw); }
+            .footer-row { display: grid; gap: 12px; }
+            .footer-nav, .footer-talk { display: flex; flex-wrap: wrap; width: 100%; gap: 8px 18px; }
+            .footer-nav a, .footer-talk a { letter-spacing: 0.1em; font-size: 0.68rem; }
+        }
+
+        label { display: block; font-size: 0.78rem; font-weight: 600; margin-bottom: 6px; }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            font: inherit;
+            background: #fff;
+        }
+
+        textarea { min-height: 110px; resize: vertical; }
+
+        .star-pick { display: flex; gap: 4px; }
+        .star-pick button {
+            border: 0;
+            background: none;
+            font-size: 1.4rem;
+            color: #d7c4c0;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.45s var(--ease-inout), transform 180ms var(--ease-silk);
+        }
+        .star-pick button:active { transform: scale(0.96); }
+        .star-pick button.is-on { color: var(--gold); }
+
+        .note { font-size: 0.82rem; color: var(--cherry); margin-top: 10px; }
+
+        footer {
+            background: var(--ink);
+            color: var(--cream);
+            padding: 36px 0 14px;
+            text-align: left;
+        }
+
+        .footer-mark {
+            margin: 0 0 2px;
+            line-height: 0;
+        }
+
+        .footer-mark .brand-mark {
+            display: block;
+            height: auto;
+            width: min(10.5rem, 46vw);
+        }
+
+        .footer-line {
+            margin: 0 0 22px;
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(0.92rem, 1.6vw, 1.08rem);
+            font-style: italic;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: rgba(248, 240, 240, 0.5);
+        }
+
+        .footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px 24px;
+            flex-wrap: wrap;
+            padding-bottom: 14px;
+        }
+
+        .footer-nav,
+        .footer-talk {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px 26px;
+            margin: 0;
+            min-width: 0;
+        }
+
+        footer a {
+            color: rgba(248, 240, 240, 0.58);
+            text-decoration: none;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            transition: color 0.45s var(--ease-inout);
+        }
+
+        footer a:hover { color: var(--cream); }
+
+        .footer-base {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid rgba(248, 240, 240, 0.1);
+            padding-top: 10px;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            color: rgba(248, 240, 240, 0.36);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a class="brand" href="index.html">
+                    <img class="brand-mark" src="assets/bling-berry-logo.png" alt="Bling Berry">
+                </a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li>
+                        <a href="index.html#shop">
+                            Shop
+                            <svg class="chevron" viewBox="0 0 12 12" fill="none" aria-hidden>
+                                <path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                        <div class="drop">
+                            <a href="Bangles.html">Bangles</a>
+                            <a href="Watches.html">Watches</a>
+                            <a href="index.html#shop">All collections</a>
+                        </div>
+                    </li>
+                    <li><a href="About.html">About</a></li>
+                    <li><a class="is-now" href="Reviews.html" aria-current="page">Reviews</a></li>
+                    <li><a href="index.html#order">Order</a></li>
+                </ul>
+                <div class="nav-end">
+                    <a class="nav-auth" href="login.html">Login</a>
+                    <button class="menu-btn" type="button" id="menu-btn" aria-label="Open menu" aria-expanded="false"><span></span></button>
+                </div>
+            </nav>
+        </div>
+        <div class="mobile-nav" id="mobile-nav">
+            <a href="index.html">Home</a>
+            <a href="index.html#shop">Shop</a>
+            <a href="Bangles.html">Bangles</a>
+            <a href="Watches.html">Watches</a>
+            <a href="About.html">About</a>
+            <a href="Reviews.html" aria-current="page">Reviews</a>
+            <a href="index.html#order">Order</a>
+            <a class="nav-auth" href="login.html">Login</a>
+        </div>
+        <div class="marquee" aria-hidden="true">
+            <div class="marquee-track">
+                <span class="marquee-set">
+                    <img class="brand-mark brand-mark--marquee" src="assets/brand-lockup.png" alt=""><b>·</b>
+                    <span>Photograph well</span><b>·</b>
+                    <span>Wear better</span><b>·</b>
+                    <span>Honest prices</span><b>·</b>
+                    <span>Anti tarnish</span><b>·</b>
+                    <span>Pan India</span><b>·</b>
+                </span>
+                <span class="marquee-set">
+                    <img class="brand-mark brand-mark--marquee" src="assets/brand-lockup.png" alt=""><b>·</b>
+                    <span>Photograph well</span><b>·</b>
+                    <span>Wear better</span><b>·</b>
+                    <span>Honest prices</span><b>·</b>
+                    <span>Anti tarnish</span><b>·</b>
+                    <span>Pan India</span><b>·</b>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="intro">
+                <div>
+                    <p class="kicker">Reviews</p>
+                    <h1>Loved on the feed</h1>
+                    <p class="lede">The kind of reviews we live for — packing orders, close-ups, and “wait let me wipe my camera.” Read them here, or leave your own.</p>
+                    <ul class="chips">
+                        <li id="chip-avg">5.0 average</li>
+                        <li id="chip-count">3 reviews</li>
+                        <li>Live on site</li>
+                    </ul>
+                </div>
+                <button class="btn" type="button" id="toggle-form">Write a review</button>
+            </div>
+
+            <div class="form-wrap" id="form-wrap">
+                <form id="review-form">
+                    <div class="form-grid two">
+                        <div>
+                            <label for="name">Name</label>
+                            <input id="name" name="name" required autocomplete="name">
+                        </div>
+                        <div>
+                            <label for="look">Piece</label>
+                            <select id="look" name="look">
+                                <option>Bangle stack</option>
+                                <option>Vintage watch</option>
+                                <option>Everyday sparkle</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="margin-top:14px">
+                        <label>Rating</label>
+                        <div class="star-pick" id="star-pick" role="group" aria-label="Rating">
+                            <button type="button" data-star="1" aria-label="1 star">★</button>
+                            <button type="button" data-star="2" aria-label="2 stars">★</button>
+                            <button type="button" data-star="3" aria-label="3 stars">★</button>
+                            <button type="button" data-star="4" aria-label="4 stars">★</button>
+                            <button type="button" data-star="5" class="is-on" aria-label="5 stars">★</button>
+                        </div>
+                    </div>
+                    <div style="margin-top:14px">
+                        <label for="title">Title</label>
+                        <input id="title" name="title" required placeholder="What stood out?">
+                    </div>
+                    <div style="margin-top:14px">
+                        <label for="body">Review</label>
+                        <textarea id="body" name="body" required placeholder="How it looked, how it wore, how it packed."></textarea>
+                    </div>
+                    <button class="btn" type="submit" style="margin-top:16px">Post review</button>
+                    <p class="note" id="form-note" role="status"></p>
+                </form>
+            </div>
+
+            <section class="score" aria-label="Review score">
+                <div>
+                    <p class="kicker">Score</p>
+                    <p class="score-num" id="avg-num">5.0</p>
+                    <p class="gold" id="avg-stars">★★★★★</p>
+                    <p class="meta" id="avg-copy">Based on 3 reviews</p>
+                </div>
+                <div>
+                    <p class="kicker" style="margin-bottom:12px">Rating mix</p>
+                    <div class="mix" id="mix"></div>
+                </div>
+            </section>
+
+            <div class="list" id="reviews-list"></div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p class="footer-mark"><img class="brand-mark" src="assets/bling-berry-logo-on-dark.png" alt="Bling Berry"></p>
+            <p class="footer-line">Photograph well. Wear better.</p>
+            <div class="footer-row">
+                <nav class="footer-nav" aria-label="Footer">
+                    <a href="Bangles.html">Bangles</a>
+                    <a href="Watches.html">Watches</a>
+                    <a href="About.html">About</a>
+                    <a href="Reviews.html">Reviews</a>
+                    <a href="index.html#order">Order</a>
+                </nav>
+                <p class="footer-talk">
+                    <a href="https://www.instagram.com/blingberyyy/" target="_blank" rel="noopener">Instagram</a>
+                    <a href="https://wa.me/918668782212?text=Hi%20Bling%20Berry%2C%20I%27d%20like%20to%20order." target="_blank" rel="noopener">WhatsApp</a>
+                </p>
+            </div>
+            <div class="footer-base">
+                <span>© 2026 Bling Berry</span>
+                <span>India</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            const menuBtn = document.getElementById("menu-btn");
+            const mobileNav = document.getElementById("mobile-nav");
+            if (menuBtn && mobileNav) {
+                menuBtn.addEventListener("click", function () {
+                    const open = mobileNav.classList.toggle("is-open");
+                    menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+                });
+            }
+
+            const SEED = [
+                { id: "seed-1", name: "Aisha", look: "Festive stack", rating: 5, title: "Finished the ethnic fit", body: "The bangle stack made my ethnic fit look finished. And it didn’t feel cheap in person.", date: "2026-08-12" },
+                { id: "seed-2", name: "Riya", look: "Vintage watch", rating: 5, title: "Not the same boring circle", body: "Finally a watch that isn’t the same boring circle. Packaging was cute too.", date: "2026-08-28" },
+                { id: "seed-3", name: "Meher", look: "Everyday sparkle", rating: 5, title: "Anti-tarnish is not a lie", body: "Anti-tarnish is not a lie. Wore it all week, still catching light.", date: "2026-09-04" }
+            ];
+            const KEY = "blingBerryReviews";
+
+            const loadExtra = function () {
+                try {
+                    const raw = localStorage.getItem(KEY);
+                    const list = raw ? JSON.parse(raw) : [];
+                    return Array.isArray(list) ? list : [];
+                } catch (e) {
+                    return [];
+                }
+            };
+
+            const stars = function (n) {
+                return "★★★★★".slice(0, n) + "☆☆☆☆☆".slice(0, 5 - n);
+            };
+
+            const escape = function (value) {
+                return String(value)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;");
+            };
+
+            const formatDate = function (value) {
+                const d = new Date(value);
+                if (isNaN(d.getTime())) return "";
+                return d.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+            };
+
+            const render = function () {
+                const extra = loadExtra();
+                const reviews = SEED.concat(extra).sort(function (a, b) {
+                    return new Date(b.date) - new Date(a.date);
+                });
+                const count = reviews.length;
+                const avg = count ? reviews.reduce(function (sum, r) { return sum + r.rating; }, 0) / count : 0;
+                const dist = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+                reviews.forEach(function (r) { dist[r.rating] += 1; });
+
+                document.getElementById("avg-num").textContent = avg.toFixed(1);
+                document.getElementById("avg-stars").textContent = stars(Math.round(avg));
+                document.getElementById("avg-copy").textContent = "Based on " + count + (count === 1 ? " review" : " reviews");
+                document.getElementById("chip-avg").textContent = avg.toFixed(1) + " average";
+                document.getElementById("chip-count").textContent = count + (count === 1 ? " review" : " reviews");
+
+                const mix = document.getElementById("mix");
+                mix.innerHTML = "";
+                [5, 4, 3, 2, 1].forEach(function (star) {
+                    const n = dist[star];
+                    const pct = count ? Math.round((n / count) * 100) : 0;
+                    const row = document.createElement("div");
+                    row.className = "mix-row";
+                    row.innerHTML = "<span>" + star + "★</span><div class=\"bar\"><span style=\"width:" + pct + "%\"></span></div><span>" + n + "</span>";
+                    mix.appendChild(row);
+                });
+
+                const list = document.getElementById("reviews-list");
+                list.innerHTML = "";
+                reviews.forEach(function (r) {
+                    const el = document.createElement("article");
+                    el.className = "card";
+                    el.innerHTML = "<p class=\"gold\">" + stars(r.rating) + "</p><h2>" + escape(r.title) + "<span class=\"tag\">" + escape(r.look) + "</span></h2><p>" + escape(r.body) + "</p><p class=\"meta\">" + [escape(r.name), escape(r.look), formatDate(r.date)].filter(Boolean).join(" · ") + "</p>";
+                    list.appendChild(el);
+                });
+            };
+
+            const formWrap = document.getElementById("form-wrap");
+            const toggle = document.getElementById("toggle-form");
+            toggle.addEventListener("click", function () {
+                const on = formWrap.classList.toggle("is-on");
+                toggle.textContent = on ? "Close form" : "Write a review";
+                toggle.classList.toggle("btn-ghost", on);
+            });
+
+            let rating = 5;
+            const pick = document.getElementById("star-pick");
+            pick.querySelectorAll("button").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    rating = Number(btn.getAttribute("data-star"));
+                    pick.querySelectorAll("button").forEach(function (other) {
+                        other.classList.toggle("is-on", Number(other.getAttribute("data-star")) <= rating);
+                    });
+                });
+            });
+
+            document.getElementById("review-form").addEventListener("submit", function (event) {
+                event.preventDefault();
+                const extra = loadExtra();
+                extra.push({
+                    id: "local-" + Date.now(),
+                    name: document.getElementById("name").value.trim(),
+                    look: document.getElementById("look").value,
+                    rating: rating,
+                    title: document.getElementById("title").value.trim(),
+                    body: document.getElementById("body").value.trim(),
+                    date: new Date().toISOString()
+                });
+                localStorage.setItem(KEY, JSON.stringify(extra));
+                this.reset();
+                rating = 5;
+                pick.querySelectorAll("button").forEach(function (other) {
+                    other.classList.toggle("is-on", Number(other.getAttribute("data-star")) <= 5);
+                });
+                document.getElementById("form-note").textContent = "Posted. It now lives on this page.";
+                render();
+            });
+
+            render();
+        }());
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js?v=live2"></script>
+</body>
+</html>
