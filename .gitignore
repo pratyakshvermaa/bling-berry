@@ -6,3 +6,6 @@ dist/
 .DS_Store
 lan-users.json
 lan-users.json.tmp
+
+# Local Netlify folder
+.netlify
